@@ -1,7 +1,13 @@
+import cc.redberry.rings.*;
+import cc.redberry.rings.poly.*;
+import cc.redberry.rings.poly.univar.*;
+import cc.redberry.rings.poly.multivar.*;
+
+import static cc.redberry.rings.poly.PolynomialMethods.*;
+import static cc.redberry.rings.Rings.*;
+
 public class Tester {
     public static void main(String[] args) {
-        Term t = new Term("5 + w");
-        Term w = new Term("6");
-        System.out.println(t.add(w));
+
     }
 }
