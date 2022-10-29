@@ -3,6 +3,7 @@ import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.io.Coder;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class EROController {
@@ -48,7 +49,8 @@ public class EROController {
                 try {
                     parseOperation(str);
                 } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
+                    //System.out.println("Error: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }
@@ -91,7 +93,6 @@ public class EROController {
         }
         if (split.length != 2) throw new Exception("Bad formatting");
         String destinationRowStr = split[0].strip();
-        System.out.println(destinationRowStr);
         if ((destinationRowStr.charAt(0) != 'R' && destinationRowStr.charAt(0) != 'r') || destinationRowStr.length() <= 1) throw new Exception("Malformed destination row");
         int destinationRow = Integer.parseInt(destinationRowStr.substring(1)) - 1;
         if (destinationRow < 0 || destinationRow >= matrix.length) throw new Exception("invalid destination row");
@@ -106,18 +107,22 @@ public class EROController {
         }
 
         if (op.equals("+") || op.equals("-")) {
-            split = operandStr.split("[r,R]");
+            split = operandStr.strip().split("[r,R]");
             Rational<MultivariatePolynomial<BigInteger>> scale;
-            if (split.length == 1) {
-                if (operandStr.indexOf('r') == operandStr.length() - 1 || operandStr.indexOf('R') == operandStr.length() - 1)
-                    throw new Exception("Invalid target row");
+            int targetRow;
+            if (split[0].isEmpty()) {
                 scale = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse("1");
             }
-            else if (split.length == 2) {
+            else {
                 scale = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse(split[0]);
             }
-            else throw new Exception("Invalid target row");
+            targetRow = Integer.parseInt(split[1]) - 1;
+            if (targetRow < 0 || targetRow >= matrix.length) throw new Exception("invalid target row");
             if (op.equals("-")) scale = scale.multiply((Rational<MultivariatePolynomial<BigInteger>>) coder.parse("-1"));
+            for (int i = 0; i < matrix[destinationRow].length; i++) {
+                matrix[destinationRow][i] = matrix[destinationRow][i].add(matrix[targetRow][i].multiply(scale));
+            }
+            return;
         }
     }
 }
