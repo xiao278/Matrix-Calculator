@@ -2,8 +2,6 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.io.Coder;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
-
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class EROController {
@@ -49,8 +47,7 @@ public class EROController {
                 try {
                     parseOperation(str);
                 } catch (Exception e) {
-                    //System.out.println("Error: " + e.getMessage());
-                    e.printStackTrace();
+                    System.out.println("Error: " + e.getMessage());
                 }
             }
         }
@@ -59,28 +56,35 @@ public class EROController {
 
     private static void parseOperation(String input) throws Exception {
         int scaleIndex = input.indexOf("*=");
+        int divIndex = input.indexOf("/=");
         int addIndex = input.indexOf("+=");
         int subIndex = input.indexOf("-=");
         int swapIndex = input.indexOf("<>");
 
+        int numOps = 5;
+
         String[] split;
         String op = "none";
 
-        int total = scaleIndex + addIndex + subIndex + swapIndex;
-        if (total != -4) {
-            if (scaleIndex == total + 3) {
+        int total = scaleIndex + addIndex + subIndex + swapIndex + divIndex;
+        if (total != -1*numOps) {
+            if (scaleIndex == total + numOps - 1) {
                 split = input.split("\\*=");
                 op = "*";
             }
-            else if (addIndex == total + 3) {
+            else if (divIndex == total + numOps - 1) {
+                split = input.split("/=");
+                op = "/";
+            }
+            else if (addIndex == total + numOps - 1) {
                 split = input.split("\\+=");
                 op = "+";
             }
-            else if (subIndex == total + 3) {
+            else if (subIndex == total + numOps - 1) {
                 split = input.split("-=");
                 op = "-";
             }
-            else if (swapIndex == total + 3) {
+            else if (swapIndex == total + numOps - 1) {
                 split = input.split("<>");
                 op = "swap";
             }
@@ -106,6 +110,14 @@ public class EROController {
             return;
         }
 
+        if (op.equals("/")) {
+            Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse(operandStr);
+            for (int i = 0; i < matrix[destinationRow].length; i++) {
+                matrix[destinationRow][i] = matrix[destinationRow][i].divide(scale);
+            }
+            return;
+        }
+
         if (op.equals("+") || op.equals("-")) {
             split = operandStr.strip().split("[r,R]");
             Rational<MultivariatePolynomial<BigInteger>> scale;
@@ -122,6 +134,17 @@ public class EROController {
             for (int i = 0; i < matrix[destinationRow].length; i++) {
                 matrix[destinationRow][i] = matrix[destinationRow][i].add(matrix[targetRow][i].multiply(scale));
             }
+            return;
+        }
+
+        if (op.equals("swap")) {
+            split = operandStr.strip().split("[r,R]");
+            if (!split[0].isEmpty()) throw new Exception("Cannot scale during swap");
+            int targetRow = Integer.parseInt(split[1]) - 1;
+            if (targetRow < 0 || targetRow >= matrix.length) throw new Exception("invalid target row");
+            var temp = matrix[destinationRow];
+            matrix[destinationRow] = matrix[targetRow];
+            matrix[targetRow] = temp;
             return;
         }
     }
