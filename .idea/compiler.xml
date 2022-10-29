@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Elementary Row Operation Calculator" target="1.5" />
+      <module name="Elementary Row Operation Calculator" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
