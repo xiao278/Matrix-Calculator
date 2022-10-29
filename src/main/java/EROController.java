@@ -19,7 +19,7 @@ public class EROController {
             System.out.print(">");
             if (processInput()) return;
         }
-    };
+    }
 
     private static void moreInfo() {
         Printer.clearConsole();
