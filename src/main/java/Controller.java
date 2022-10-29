@@ -1,14 +1,22 @@
 import cc.redberry.rings.Rational;
+import cc.redberry.rings.Rationals;
+import cc.redberry.rings.Rings;
 import cc.redberry.rings.bigint.BigInteger;
+import cc.redberry.rings.io.Coder;
+import cc.redberry.rings.poly.MultivariateRing;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
 import javax.swing.text.Position;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static cc.redberry.rings.Rings.Frac;
+import static cc.redberry.rings.Rings.Z;
+
 public class Controller {
     private static Scanner s;
     private static Rational<MultivariatePolynomial<BigInteger>>[][] matrix;
+    private static Coder<Rational<MultivariatePolynomial<BigInteger>>, ?, ?> coder;
 
     private static final String
             rowOps = "Perform ERO",
@@ -22,8 +30,19 @@ public class Controller {
 
     public static void main(String[] args) {
         s = new Scanner(System.in);
+
+        String[] allLetters = new String[26];
+        for (int i = 0; i < 26; i++) {
+            allLetters[i] = "" + (char)('a' + i);
+        }
+        MultivariateRing<MultivariatePolynomial<BigInteger>> ring = Rings.MultivariateRing(26, Z);
+        Rationals<MultivariatePolynomial<BigInteger>> field = Frac(ring);
+        coder = Coder.mkRationalsCoder(
+                field,
+                Coder.mkMultivariateCoder(ring, allLetters));
+
         try {
-            matrix = Initializer.start(s);
+            matrix = Initializer.start(s, coder);
             Printer.clearConsole();
         }
         catch (Exception e) {
@@ -64,7 +83,7 @@ public class Controller {
                 System.exit(1);
             }
             case rowOps -> {
-                EROController.start(matrix, s);
+                EROController.start(matrix, s, coder);
             }
             case guide -> {
                 System.out.println("wip");
