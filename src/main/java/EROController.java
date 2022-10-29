@@ -45,6 +45,7 @@ public class EROController {
             }
             default -> {
                 try {
+                    Printer.clearConsole();
                     parseOperation(str);
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
@@ -102,18 +103,12 @@ public class EROController {
         if (destinationRow < 0 || destinationRow >= matrix.length) throw new Exception("invalid destination row");
 
         String operandStr = split[1].strip();
-        if (op.equals("*")) {
+        if (op.equals("*") || op.equals("/")) {
+            if (operandStr.indexOf('r') != -1 || operandStr.indexOf('R') != -1) throw new Exception("Scaling can only be done with scalars");
             Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse(operandStr);
+            if (op.equals("/")) scale = scale.pow(-1);
             for (int i = 0; i < matrix[destinationRow].length; i++) {
                 matrix[destinationRow][i] = matrix[destinationRow][i].multiply(scale);
-            }
-            return;
-        }
-
-        if (op.equals("/")) {
-            Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse(operandStr);
-            for (int i = 0; i < matrix[destinationRow].length; i++) {
-                matrix[destinationRow][i] = matrix[destinationRow][i].divide(scale);
             }
             return;
         }
