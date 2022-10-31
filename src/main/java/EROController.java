@@ -104,6 +104,7 @@ public class EROController {
         int destinationRow = Integer.parseInt(destinationRowStr.substring(1)) - 1;
 
         var matrix = matrixSystem.getMatrix();
+        String operation;
 
         if (destinationRow < 0 || destinationRow >= matrixSystem.getRows()) throw new Exception("invalid destination row");
         String operandStr = split[1].strip();
@@ -115,6 +116,7 @@ public class EROController {
             for (int i = 0; i < matrix[destinationRow].length; i++) {
                 matrix[destinationRow][i] = matrix[destinationRow][i].multiply(scale);
             }
+            operation = "R" + destinationRow + " ↦ " + Printer.rationalToString(scale) + "R" + destinationRow;
         }
 
         else if (op.equals("+") || op.equals("-")) {
@@ -129,10 +131,15 @@ public class EROController {
             }
             targetRow = Integer.parseInt(split[1]) - 1;
             if (targetRow < 0 || targetRow >= matrix.length) throw new Exception("invalid target row");
-            if (op.equals("-")) scale = scale.multiply((Rational<MultivariatePolynomial<BigInteger>>) Parser.parse("-1"));
+            String scaleString = Printer.rationalToString(scale);
+            if (op.equals("-")) {
+                scale = scale.multiply(Parser.parse("-1"));
+            }
             for (int i = 0; i < matrixSystem.getCols(); i++) {
                 matrix[destinationRow][i] = matrix[destinationRow][i].add(matrix[targetRow][i].multiply(scale));
             }
+            operation = "R" + destinationRow + " ↦ " + "R" + destinationRow + (op.equals("-") ? " - " : " + ")
+                    + scaleString + "R" + targetRow;
         }
 
         else if (op.equals("swap")) {
@@ -143,13 +150,11 @@ public class EROController {
             var temp = matrix[destinationRow];
             matrix[destinationRow] = matrix[targetRow];
             matrix[targetRow] = temp;
-            return;
+            operation = "R" + destinationRow + " ↔ R" + targetRow;
         }
 
         else throw new Exception("invalid operation");
 
-
-
-        matrixSystem.add(matrix);
+        matrixSystem.add(matrix, operation);
     }
 }
