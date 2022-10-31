@@ -5,7 +5,7 @@ import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 import java.util.Scanner;
 
 public class Initializer {
-    public static Rational<MultivariatePolynomial<BigInteger>>[][] start(Scanner s, Coder coder) throws Exception {
+    public static Matrix start(Scanner s) throws Exception {
         //[row][col]
         Rational<MultivariatePolynomial<BigInteger>>[][] matrix;
         int row;
@@ -31,9 +31,9 @@ public class Initializer {
                 throw new Exception("bad input");
             }
             for (int j = 0; j < col; j++) {
-                matrix[i][j] = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse(Parser.parseInput(splitBuffer[j]));
+                matrix[i][j] = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(splitBuffer[j]);
             }
         }
-        return matrix;
+        return new Matrix(matrix);
     }
 }

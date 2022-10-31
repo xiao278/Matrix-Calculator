@@ -1,6 +1,8 @@
 import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
+
+import java.util.Arrays;
 import java.util.Stack;
 
 public class Matrix {
@@ -31,10 +33,16 @@ public class Matrix {
 
     /**
      *
-     * @return the most recent matrix
+     * @return makes a copy of the most recent matrix
      */
     public Rational<MultivariatePolynomial<BigInteger>>[][] getMatrix() {
-        return matrixStates.peek();
+        Rational<MultivariatePolynomial<BigInteger>>[][] copy = new Rational[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                copy[i][j] = Parser.parse(Printer.rationalToString(get(i,j)));
+            }
+        }
+        return copy;
     }
 
     public void add(Rational<MultivariatePolynomial<BigInteger>>[][] mat) {
@@ -46,7 +54,8 @@ public class Matrix {
      * @return the matrix removed
      */
     public Rational<MultivariatePolynomial<BigInteger>>[][] pop() {
-        return matrixStates.pop();
+        if (matrixStates.size() > 1) return matrixStates.pop();
+        return null;
     }
 
     public int getRows() {

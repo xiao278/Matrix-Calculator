@@ -15,9 +15,7 @@ import static cc.redberry.rings.Rings.Z;
 
 public class Controller {
     private static Scanner s;
-    private static Rational<MultivariatePolynomial<BigInteger>>[][] matrix;
-    private static Coder<Rational<MultivariatePolynomial<BigInteger>>, ?, ?> coder;
-
+    private static Matrix matrix;
     private static final String
             rowOps = "Perform ERO",
             transpose = "Transpose",
@@ -30,19 +28,9 @@ public class Controller {
 
     public static void main(String[] args) {
         s = new Scanner(System.in);
-
-        String[] allLetters = new String[26];
-        for (int i = 0; i < 26; i++) {
-            allLetters[i] = "" + (char)('a' + i);
-        }
-        MultivariateRing<MultivariatePolynomial<BigInteger>> ring = Rings.MultivariateRing(26, Z);
-        Rationals<MultivariatePolynomial<BigInteger>> field = Frac(ring);
-        coder = Coder.mkRationalsCoder(
-                field,
-                Coder.mkMultivariateCoder(ring, allLetters));
-
+        Parser.initialize();
         try {
-            matrix = Initializer.start(s, coder);
+            matrix = Initializer.start(s);
             Printer.clearConsole();
         }
         catch (Exception e) {
@@ -83,7 +71,7 @@ public class Controller {
                 System.exit(1);
             }
             case rowOps -> {
-                EROController.start(matrix, s, coder);
+                EROController.start(matrix, s);
             }
             case guide -> {
                 System.out.println("wip");

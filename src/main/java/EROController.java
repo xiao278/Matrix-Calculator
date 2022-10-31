@@ -5,16 +5,14 @@ import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 import java.util.Scanner;
 
 public class EROController {
-    private static Rational<MultivariatePolynomial<BigInteger>>[][] matrix;
+    private static Matrix matrixSystem;
     private static Scanner s;
-    private static Coder coder;
 
-    public static void start(Rational<MultivariatePolynomial<BigInteger>>[][] in, Scanner scanner, Coder c) {
+    public static void start(Matrix m, Scanner scanner) {
         s = scanner;
-        coder = c;
-        matrix = in;
+        matrixSystem = m;
         while (true) {
-            Printer.printMatrix(matrix);
+            Printer.printMatrix(matrixSystem.getMatrix());
             System.out.println("Enter a command (type \"h\" for more info): ");
             System.out.print(">");
             if (processInput()) return;
@@ -42,6 +40,9 @@ public class EROController {
             case "q" -> {
                 Printer.clearConsole();
                 return true;
+            }
+            case "u" -> {
+                matrixSystem.pop();
             }
             default -> {
                 try {
@@ -100,39 +101,40 @@ public class EROController {
         String destinationRowStr = split[0].strip();
         if ((destinationRowStr.charAt(0) != 'R' && destinationRowStr.charAt(0) != 'r') || destinationRowStr.length() <= 1) throw new Exception("Malformed destination row");
         int destinationRow = Integer.parseInt(destinationRowStr.substring(1)) - 1;
-        if (destinationRow < 0 || destinationRow >= matrix.length) throw new Exception("invalid destination row");
+
+        var matrix = matrixSystem.getMatrix();
+
+        if (destinationRow < 0 || destinationRow >= matrixSystem.getRows()) throw new Exception("invalid destination row");
 
         String operandStr = split[1].strip();
         if (op.equals("*") || op.equals("/")) {
             if (operandStr.indexOf('r') != -1 || operandStr.indexOf('R') != -1) throw new Exception("Scaling can only be done with scalars");
-            Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse(Parser.parseInput(operandStr));
+            Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(operandStr);
             if (op.equals("/")) scale = scale.pow(-1);
             for (int i = 0; i < matrix[destinationRow].length; i++) {
                 matrix[destinationRow][i] = matrix[destinationRow][i].multiply(scale);
             }
-            return;
         }
 
-        if (op.equals("+") || op.equals("-")) {
+        else if (op.equals("+") || op.equals("-")) {
             split = operandStr.strip().split("[r,R]");
             Rational<MultivariatePolynomial<BigInteger>> scale;
             int targetRow;
             if (split[0].isEmpty()) {
-                scale = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse("1");
+                scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse("1");
             }
             else {
-                scale = (Rational<MultivariatePolynomial<BigInteger>>) coder.parse(Parser.parseInput(split[0]));
+                scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(split[0]);
             }
             targetRow = Integer.parseInt(split[1]) - 1;
             if (targetRow < 0 || targetRow >= matrix.length) throw new Exception("invalid target row");
-            if (op.equals("-")) scale = scale.multiply((Rational<MultivariatePolynomial<BigInteger>>) coder.parse("-1"));
-            for (int i = 0; i < matrix[destinationRow].length; i++) {
+            if (op.equals("-")) scale = scale.multiply((Rational<MultivariatePolynomial<BigInteger>>) Parser.parse("-1"));
+            for (int i = 0; i < matrixSystem.getCols(); i++) {
                 matrix[destinationRow][i] = matrix[destinationRow][i].add(matrix[targetRow][i].multiply(scale));
             }
-            return;
         }
 
-        if (op.equals("swap")) {
+        else if (op.equals("swap")) {
             split = operandStr.strip().split("[r,R]");
             if (!split[0].isEmpty()) throw new Exception("Cannot scale during swap");
             int targetRow = Integer.parseInt(split[1]) - 1;
@@ -142,5 +144,7 @@ public class EROController {
             matrix[targetRow] = temp;
             return;
         }
+
+        matrixSystem.add(matrix);
     }
 }
