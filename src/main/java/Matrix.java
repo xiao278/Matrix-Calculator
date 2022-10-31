@@ -9,6 +9,7 @@ public class Matrix {
     private int rows;
     private int cols;
     private Stack<Rational<MultivariatePolynomial<BigInteger>>[][]> matrixStates;
+    private Stack<String> operations;
     private String name;
     private static int matrixCounter;
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
@@ -17,7 +18,9 @@ public class Matrix {
 
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr, String name) {
         matrixStates = new Stack<>();
+        operations = new Stack<>();
         matrixStates.push(squareArr);
+        operations.push("Initial matrix");
         this.rows = squareArr.length;
         this.cols = squareArr[0].length;
         this.name = name;
@@ -36,17 +39,26 @@ public class Matrix {
      * @return makes a copy of the most recent matrix
      */
     public Rational<MultivariatePolynomial<BigInteger>>[][] getMatrix() {
+        return copyMatrix(matrixStates.peek());
+    }
+
+    private Rational<MultivariatePolynomial<BigInteger>>[][] copyMatrix(Rational<MultivariatePolynomial<BigInteger>>[][] mat) {
         Rational<MultivariatePolynomial<BigInteger>>[][] copy = new Rational[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                copy[i][j] = Parser.parse(Printer.rationalToString(get(i,j)));
+                copy[i][j] = Parser.parse(Printer.rationalToString(mat[i][j]));
             }
         }
         return copy;
     }
 
     public void add(Rational<MultivariatePolynomial<BigInteger>>[][] mat) {
+        add(mat, "Unknown");
+    }
+
+    public void add(Rational<MultivariatePolynomial<BigInteger>>[][] mat, String op) {
         matrixStates.push(mat);
+        operations.push(op);
     }
 
     /**
@@ -54,7 +66,10 @@ public class Matrix {
      * @return the matrix removed
      */
     public Rational<MultivariatePolynomial<BigInteger>>[][] pop() {
-        if (matrixStates.size() > 1) return matrixStates.pop();
+        if (matrixStates.size() > 1) {
+            operations.pop();
+            return matrixStates.pop();
+        }
         return null;
     }
 
@@ -64,5 +79,9 @@ public class Matrix {
 
     public int getCols() {
         return cols;
+    }
+
+    public String preview() {
+        return name + " (" + rows + "×" + cols + ")";
     }
 }

@@ -43,6 +43,7 @@ public class EROController {
             }
             case "u" -> {
                 matrixSystem.pop();
+                Printer.clearConsole();
             }
             default -> {
                 try {
@@ -105,8 +106,8 @@ public class EROController {
         var matrix = matrixSystem.getMatrix();
 
         if (destinationRow < 0 || destinationRow >= matrixSystem.getRows()) throw new Exception("invalid destination row");
-
         String operandStr = split[1].strip();
+
         if (op.equals("*") || op.equals("/")) {
             if (operandStr.indexOf('r') != -1 || operandStr.indexOf('R') != -1) throw new Exception("Scaling can only be done with scalars");
             Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(operandStr);
@@ -144,6 +145,10 @@ public class EROController {
             matrix[targetRow] = temp;
             return;
         }
+
+        else throw new Exception("invalid operation");
+
+
 
         matrixSystem.add(matrix);
     }
