@@ -2,6 +2,7 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -15,6 +16,12 @@ public class Printer {
     {
         //a bunch of new line
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        //actual console clear for when not in IDE console
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (Exception e) {
+            //do nothing
+        }
     }
 
     public static void printMatrix(Rational[][] matrix) {

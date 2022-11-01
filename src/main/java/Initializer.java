@@ -31,7 +31,7 @@ public class Initializer {
                 throw new Exception("bad input");
             }
             for (int j = 0; j < col; j++) {
-                matrix[i][j] = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(splitBuffer[j]);
+                matrix[i][j] = Parser.parse(splitBuffer[j]);
             }
         }
         return new Matrix(matrix);

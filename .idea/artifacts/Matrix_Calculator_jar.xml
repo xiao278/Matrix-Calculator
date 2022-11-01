@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="Elementary Row Operation Calculator:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/Elementary_Row_Operation_Calculator_jar</output-path>
-    <root id="archive" name="Elementary Row Operation Calculator.jar">
+  <artifact type="jar" name="Matrix-Calculator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Matrix_Calculator_jar</output-path>
+    <root id="archive" name="Matrix-Calculator.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" />
       </element>
