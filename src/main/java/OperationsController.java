@@ -21,13 +21,20 @@ public class OperationsController {
 
     private static void moreInfo() {
         Printer.clearConsole();
-        System.out.println("Type \"q\" to return to main menu\n");
-        System.out.println("Performing elementary row operations formats: ");
-        System.out.println("    1) Scaling: \"Rx *= c\" means scale row x by c");
-        System.out.println("    2) Adding: \"Rx += cRy\" means add (c times row y) to row x");
-        System.out.println("    3) Swapping: \"Rx <> Ry\" means swap row x with row y\n");
-        System.out.println("---Press enter to go back---");
+        System.out.println("i) Type \"q\" to return to main menu");
+
+        System.out.println("\nii) Performing elementary row operations - use r or R to denote the row:");
+        System.out.println("    • Scaling: \"Rx *= c\" means \"scale row x by c\"");
+        System.out.println("    • Dividing: \"Rx /= c\" means \"scale row x by (1/c)\"");
+        System.out.println("    • Adding: \"Rx += cRy\" means \"add (c times row y) to row x\"");
+        System.out.println("    • Subtracting: \"Rx -= cRy\" means \"subtract (c times row y) from row x\"");
+        System.out.println("    • Swapping: \"Rx <> Ry\" means \"swap row x with row y\"");
+
+        System.out.println("\niii) performing elementary column operations: replace 'R' with 'C'");
+
+        System.out.println("\n---Press enter to go back---");
         s.nextLine();
+        Printer.clearConsole();
     }
 
     private static boolean processInput() {

@@ -17,7 +17,7 @@ public class Controller {
     private static Scanner s;
     private static Matrix matrix;
     private static final String
-            rowOps = "Perform ERO",
+            rowOps = "Perform Elementary Operation",
             transpose = "Transpose",
             guide = "User guide",
             exit = "Quit";
