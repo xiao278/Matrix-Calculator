@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact name="Build">
+    <output-path>$PROJECT_DIR$/out/artifacts/Matrix_Calculator</output-path>
+    <root id="root">
+      <element id="artifact" artifact-name="Matrix-Calculator:jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/batch/clickThis.bat" />
+    </root>
+  </artifact>
+</component>
