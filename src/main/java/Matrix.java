@@ -65,13 +65,25 @@ public class Matrix {
      *
      * @return the matrix removed
      */
-    public Rational<MultivariatePolynomial<BigInteger>>[][] pop() {
+    public Rational<MultivariatePolynomial<BigInteger>>[][] popMatrix() {
         if (matrixStates.size() > 1) {
-            operations.pop();
             return matrixStates.pop();
         }
         return null;
     }
+
+    public String popOperation() {
+        if (operations.size() > 1) {
+            return operations.pop();
+        }
+        return null;
+    }
+
+    public String undo() {
+        popMatrix();
+        return popOperation();
+    }
+
 
     public int getRows() {
         return rows;

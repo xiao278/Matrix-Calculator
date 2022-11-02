@@ -91,6 +91,6 @@ public class Printer {
                 output.append(current);
             }
         }
-        return output.toString();
+        return output.toString().strip();
     }
 }

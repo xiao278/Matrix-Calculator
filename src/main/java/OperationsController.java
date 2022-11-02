@@ -42,8 +42,8 @@ public class OperationsController {
                 return true;
             }
             case "u" -> {
-                matrixSystem.pop();
                 Printer.clearConsole();
+                System.out.println("undone operation: " + matrixSystem.undo());
             }
             default -> {
                 try {
@@ -117,7 +117,7 @@ public class OperationsController {
                 for (int i = 0; i < matrix[destinationRow].length; i++) {
                     matrix[destinationRow][i] = matrix[destinationRow][i].multiply(scale);
                 }
-                operation = "R" + destinationRow + " ↦ " + Printer.rationalToString(scale) + "R" + destinationRow;
+                operation = "R" + (destinationRow + 1) + " ↦ " + "(" + Printer.rationalToString(scale) + ")R" + (destinationRow + 1);
             }
 
             else if (op.equals("+") || op.equals("-")) {
@@ -139,8 +139,8 @@ public class OperationsController {
                 for (int i = 0; i < matrixSystem.getCols(); i++) {
                     matrix[destinationRow][i] = matrix[destinationRow][i].add(matrix[targetRow][i].multiply(scale));
                 }
-                operation = "R" + destinationRow + " ↦ " + "R" + destinationRow + (op.equals("-") ? " - " : " + ")
-                        + scaleString + "R" + targetRow;
+                operation = "R" + (destinationRow + 1) + " ↦ " + "R" + (destinationRow + 1) + (op.equals("-") ? " - " : " + ")
+                        + "(" + scaleString + ")R" + (targetRow + 1);
             }
 
             else if (op.equals("swap")) {
@@ -151,13 +151,14 @@ public class OperationsController {
                 var temp = matrix[destinationRow];
                 matrix[destinationRow] = matrix[targetRow];
                 matrix[targetRow] = temp;
-                operation = "R" + destinationRow + " ↔ R" + targetRow;
+                operation = "R" + (destinationRow + 1) + " ↔ R" + (targetRow + 1);
             }
 
             else throw new Exception("invalid operation");
 
             matrixSystem.add(matrix, operation);
         }
+
         else if (Character.toUpperCase(destinationStr.charAt(0)) == 'C') {
             int destinationCol = Integer.parseInt(destinationStr.substring(1)) - 1;
 
@@ -174,7 +175,7 @@ public class OperationsController {
                 for (int i = 0; i < matrixSystem.getRows(); i++) {
                     matrix[i][destinationCol] = matrix[i][destinationCol].multiply(scale);
                 }
-                operation = "C" + destinationCol + " ↦ " + Printer.rationalToString(scale) + "C" + destinationCol;
+                operation = "C" + (destinationCol + 1) + " ↦ " + "(" + Printer.rationalToString(scale) + ")C" + (destinationCol + 1);
             }
 
             else if (op.equals("+") || op.equals("-")) {
@@ -196,12 +197,12 @@ public class OperationsController {
                 for (int i = 0; i < matrixSystem.getRows(); i++) {
                     matrix[i][destinationCol] = matrix[i][destinationCol].add(matrix[i][targetCol].multiply(scale));
                 }
-                operation = "C" + destinationCol + " ↦ " + "C" + destinationCol + (op.equals("-") ? " - " : " + ")
-                        + scaleString + "C" + targetCol;
+                operation = "C" + (destinationCol + 1) + " ↦ " + "C" + (destinationCol + 1) + (op.equals("-") ? " - " : " + ")
+                        + "(" + scaleString + ")C" + (targetCol + 1);
             }
 
             else if (op.equals("swap")) {
-                split = operandStr.strip().split("[r,R]");
+                split = operandStr.strip().split("[c,C]");
                 if (!split[0].isEmpty()) throw new Exception("Cannot scale during swap");
                 int targetCol = Integer.parseInt(split[1]) - 1;
                 if (targetCol < 0 || targetCol >= matrix.length) throw new Exception("invalid target row");
@@ -210,12 +211,14 @@ public class OperationsController {
                     matrix[i][targetCol] = matrix[i][destinationCol];
                     matrix[i][destinationCol] = temp;
                 }
-                operation = "C" + destinationCol + " ↔ C" + targetCol;
+                operation = "C" + (destinationCol + 1) + " ↔ C" + (targetCol + 1);
             }
 
             else throw new Exception("invalid operation");
 
             matrixSystem.add(matrix, operation);
         }
+
+        else throw new Exception("bad formatting");
     }
 }
