@@ -1,6 +1,5 @@
 import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
-import cc.redberry.rings.io.Coder;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 import java.util.Scanner;
 
@@ -119,7 +118,7 @@ public class OperationsController {
 
             if (op.equals("*") || op.equals("/")) {
                 if (operandStr.indexOf('r') != -1 || operandStr.indexOf('R') != -1) throw new Exception("Scaling can only be done with scalars");
-                Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(operandStr);
+                Rational<MultivariatePolynomial<BigInteger>> scale = Parser.parse(operandStr);
                 if (op.equals("/")) scale = scale.pow(-1);
                 for (int i = 0; i < matrix[destinationRow].length; i++) {
                     matrix[destinationRow][i] = matrix[destinationRow][i].multiply(scale);
@@ -177,7 +176,7 @@ public class OperationsController {
 
             if (op.equals("*") || op.equals("/")) {
                 if (operandStr.indexOf('c') != -1 || operandStr.indexOf('C') != -1) throw new Exception("Scaling can only be done with scalars");
-                Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(operandStr);
+                Rational<MultivariatePolynomial<BigInteger>> scale = Parser.parse(operandStr);
                 if (op.equals("/")) scale = scale.pow(-1);
                 for (int i = 0; i < matrixSystem.getRows(); i++) {
                     matrix[i][destinationCol] = matrix[i][destinationCol].multiply(scale);

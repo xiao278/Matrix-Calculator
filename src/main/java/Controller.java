@@ -1,17 +1,4 @@
-import cc.redberry.rings.Rational;
-import cc.redberry.rings.Rationals;
-import cc.redberry.rings.Rings;
-import cc.redberry.rings.bigint.BigInteger;
-import cc.redberry.rings.io.Coder;
-import cc.redberry.rings.poly.MultivariateRing;
-import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
-
-import javax.swing.text.Position;
-import java.util.Arrays;
 import java.util.Scanner;
-
-import static cc.redberry.rings.Rings.Frac;
-import static cc.redberry.rings.Rings.Z;
 
 public class Controller {
     private static Scanner s;
