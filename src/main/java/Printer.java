@@ -14,14 +14,23 @@ public class Printer {
 
     public static void clearConsole()
     {
-        //a bunch of new line
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        //actual console clear for when not in IDE console
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (Exception e) {
-            //do nothing
+        if (runningFromIntelliJ()) {
+            //a bunch of new line
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        } else {
+            //actual console clear for when not in IDE console
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (Exception e) {
+                //do nothing
+            }
         }
+    }
+
+    public static boolean runningFromIntelliJ()
+    {
+        //change to false on building .jar
+        return true;
     }
 
     public static void printMatrix(Rational[][] matrix) {

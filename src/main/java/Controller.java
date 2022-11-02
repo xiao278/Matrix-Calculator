@@ -71,7 +71,7 @@ public class Controller {
                 System.exit(1);
             }
             case rowOps -> {
-                EROController.start(matrix, s);
+                OperationsController.start(matrix, s);
             }
             case guide -> {
                 System.out.println("wip");

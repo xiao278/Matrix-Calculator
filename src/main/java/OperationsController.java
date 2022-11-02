@@ -4,7 +4,7 @@ import cc.redberry.rings.io.Coder;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 import java.util.Scanner;
 
-public class EROController {
+public class OperationsController {
     private static Matrix matrixSystem;
     private static Scanner s;
 
