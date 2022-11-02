@@ -99,62 +99,123 @@ public class OperationsController {
             throw new Exception("Bad formatting");
         }
         if (split.length != 2) throw new Exception("Bad formatting");
-        String destinationRowStr = split[0].strip();
-        if ((destinationRowStr.charAt(0) != 'R' && destinationRowStr.charAt(0) != 'r') || destinationRowStr.length() <= 1) throw new Exception("Malformed destination row");
-        int destinationRow = Integer.parseInt(destinationRowStr.substring(1)) - 1;
+        String destinationStr = split[0].strip();
+        if (destinationStr.length() <= 1) throw new Exception("Maformed destination row/col");
+        if (Character.toUpperCase(destinationStr.charAt(0)) == 'R') {
+            int destinationRow = Integer.parseInt(destinationStr.substring(1)) - 1;
 
-        var matrix = matrixSystem.getMatrix();
-        String operation;
+            var matrix = matrixSystem.getMatrix();
+            String operation;
 
-        if (destinationRow < 0 || destinationRow >= matrixSystem.getRows()) throw new Exception("invalid destination row");
-        String operandStr = split[1].strip();
+            if (destinationRow < 0 || destinationRow >= matrixSystem.getRows()) throw new Exception("invalid destination row");
+            String operandStr = split[1].strip();
 
-        if (op.equals("*") || op.equals("/")) {
-            if (operandStr.indexOf('r') != -1 || operandStr.indexOf('R') != -1) throw new Exception("Scaling can only be done with scalars");
-            Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(operandStr);
-            if (op.equals("/")) scale = scale.pow(-1);
-            for (int i = 0; i < matrix[destinationRow].length; i++) {
-                matrix[destinationRow][i] = matrix[destinationRow][i].multiply(scale);
+            if (op.equals("*") || op.equals("/")) {
+                if (operandStr.indexOf('r') != -1 || operandStr.indexOf('R') != -1) throw new Exception("Scaling can only be done with scalars");
+                Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(operandStr);
+                if (op.equals("/")) scale = scale.pow(-1);
+                for (int i = 0; i < matrix[destinationRow].length; i++) {
+                    matrix[destinationRow][i] = matrix[destinationRow][i].multiply(scale);
+                }
+                operation = "R" + destinationRow + " ↦ " + Printer.rationalToString(scale) + "R" + destinationRow;
             }
-            operation = "R" + destinationRow + " ↦ " + Printer.rationalToString(scale) + "R" + destinationRow;
+
+            else if (op.equals("+") || op.equals("-")) {
+                split = operandStr.strip().split("[r,R]");
+                Rational<MultivariatePolynomial<BigInteger>> scale;
+                int targetRow;
+                if (split[0].isEmpty()) {
+                    scale = Parser.parse("1");
+                }
+                else {
+                    scale = Parser.parse(split[0]);
+                }
+                targetRow = Integer.parseInt(split[1]) - 1;
+                if (targetRow < 0 || targetRow >= matrix.length) throw new Exception("invalid target row");
+                String scaleString = Printer.rationalToString(scale);
+                if (op.equals("-")) {
+                    scale = scale.multiply(Parser.parse("-1"));
+                }
+                for (int i = 0; i < matrixSystem.getCols(); i++) {
+                    matrix[destinationRow][i] = matrix[destinationRow][i].add(matrix[targetRow][i].multiply(scale));
+                }
+                operation = "R" + destinationRow + " ↦ " + "R" + destinationRow + (op.equals("-") ? " - " : " + ")
+                        + scaleString + "R" + targetRow;
+            }
+
+            else if (op.equals("swap")) {
+                split = operandStr.strip().split("[r,R]");
+                if (!split[0].isEmpty()) throw new Exception("Cannot scale during swap");
+                int targetRow = Integer.parseInt(split[1]) - 1;
+                if (targetRow < 0 || targetRow >= matrix.length) throw new Exception("invalid target row");
+                var temp = matrix[destinationRow];
+                matrix[destinationRow] = matrix[targetRow];
+                matrix[targetRow] = temp;
+                operation = "R" + destinationRow + " ↔ R" + targetRow;
+            }
+
+            else throw new Exception("invalid operation");
+
+            matrixSystem.add(matrix, operation);
         }
+        else if (Character.toUpperCase(destinationStr.charAt(0)) == 'C') {
+            int destinationCol = Integer.parseInt(destinationStr.substring(1)) - 1;
 
-        else if (op.equals("+") || op.equals("-")) {
-            split = operandStr.strip().split("[r,R]");
-            Rational<MultivariatePolynomial<BigInteger>> scale;
-            int targetRow;
-            if (split[0].isEmpty()) {
-                scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse("1");
+            var matrix = matrixSystem.getMatrix();
+            String operation;
+
+            if (destinationCol < 0 || destinationCol >= matrixSystem.getCols()) throw new Exception("invalid destination column");
+            String operandStr = split[1].strip();
+
+            if (op.equals("*") || op.equals("/")) {
+                if (operandStr.indexOf('c') != -1 || operandStr.indexOf('C') != -1) throw new Exception("Scaling can only be done with scalars");
+                Rational<MultivariatePolynomial<BigInteger>> scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(operandStr);
+                if (op.equals("/")) scale = scale.pow(-1);
+                for (int i = 0; i < matrixSystem.getRows(); i++) {
+                    matrix[i][destinationCol] = matrix[i][destinationCol].multiply(scale);
+                }
+                operation = "C" + destinationCol + " ↦ " + Printer.rationalToString(scale) + "C" + destinationCol;
             }
-            else {
-                scale = (Rational<MultivariatePolynomial<BigInteger>>) Parser.parse(split[0]);
+
+            else if (op.equals("+") || op.equals("-")) {
+                split = operandStr.strip().split("[c,C]");
+                Rational<MultivariatePolynomial<BigInteger>> scale;
+                int targetCol;
+                if (split[0].isEmpty()) {
+                    scale = Parser.parse("1");
+                }
+                else {
+                    scale = Parser.parse(split[0]);
+                }
+                targetCol = Integer.parseInt(split[1]) - 1;
+                if (targetCol < 0 || targetCol >= matrix.length) throw new Exception("invalid target row");
+                String scaleString = Printer.rationalToString(scale);
+                if (op.equals("-")) {
+                    scale = scale.multiply(Parser.parse("-1"));
+                }
+                for (int i = 0; i < matrixSystem.getRows(); i++) {
+                    matrix[i][destinationCol] = matrix[i][destinationCol].add(matrix[i][targetCol].multiply(scale));
+                }
+                operation = "C" + destinationCol + " ↦ " + "C" + destinationCol + (op.equals("-") ? " - " : " + ")
+                        + scaleString + "C" + targetCol;
             }
-            targetRow = Integer.parseInt(split[1]) - 1;
-            if (targetRow < 0 || targetRow >= matrix.length) throw new Exception("invalid target row");
-            String scaleString = Printer.rationalToString(scale);
-            if (op.equals("-")) {
-                scale = scale.multiply(Parser.parse("-1"));
+
+            else if (op.equals("swap")) {
+                split = operandStr.strip().split("[r,R]");
+                if (!split[0].isEmpty()) throw new Exception("Cannot scale during swap");
+                int targetCol = Integer.parseInt(split[1]) - 1;
+                if (targetCol < 0 || targetCol >= matrix.length) throw new Exception("invalid target row");
+                for (int i = 0; i < matrixSystem.getRows(); i++) {
+                    var temp = matrix[i][targetCol];
+                    matrix[i][targetCol] = matrix[i][destinationCol];
+                    matrix[i][destinationCol] = temp;
+                }
+                operation = "C" + destinationCol + " ↔ C" + targetCol;
             }
-            for (int i = 0; i < matrixSystem.getCols(); i++) {
-                matrix[destinationRow][i] = matrix[destinationRow][i].add(matrix[targetRow][i].multiply(scale));
-            }
-            operation = "R" + destinationRow + " ↦ " + "R" + destinationRow + (op.equals("-") ? " - " : " + ")
-                    + scaleString + "R" + targetRow;
+
+            else throw new Exception("invalid operation");
+
+            matrixSystem.add(matrix, operation);
         }
-
-        else if (op.equals("swap")) {
-            split = operandStr.strip().split("[r,R]");
-            if (!split[0].isEmpty()) throw new Exception("Cannot scale during swap");
-            int targetRow = Integer.parseInt(split[1]) - 1;
-            if (targetRow < 0 || targetRow >= matrix.length) throw new Exception("invalid target row");
-            var temp = matrix[destinationRow];
-            matrix[destinationRow] = matrix[targetRow];
-            matrix[targetRow] = temp;
-            operation = "R" + destinationRow + " ↔ R" + targetRow;
-        }
-
-        else throw new Exception("invalid operation");
-
-        matrixSystem.add(matrix, operation);
     }
 }
