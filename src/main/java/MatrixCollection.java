@@ -12,7 +12,7 @@ public class MatrixCollection {
      * @param input get name of matrix
      * @return
      */
-    public Matrix select(String input) {
+    public Matrix get(String input) {
         return hashMap.get(input);
     }
 
@@ -22,5 +22,9 @@ public class MatrixCollection {
 
     public void add(Matrix m) {
         hashMap.put(m.getName(), m);
+    }
+
+    public Matrix[] getMatrices() {
+        return hashMap.values().toArray(new Matrix[0]);
     }
 }

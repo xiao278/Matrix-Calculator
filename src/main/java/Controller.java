@@ -56,7 +56,7 @@ public class Controller {
                 System.exit(1);
             }
             case rowOps -> {
-                OperationsController.start(matrices, s);
+                OperationsController.start(matrixPicker(), s);
             }
             case guide -> {
                 System.out.println("wip");
@@ -78,6 +78,36 @@ public class Controller {
     }
 
     public static Matrix matrixPicker() {
-        
+        while (true) {
+            var arr = matrices.getMatrices();
+            for (int i = 0; i < arr.length; i++) {
+                System.out.println((i + 1) + ") " + arr[i].preview());
+            }
+            System.out.print("enter matrix name or listing number: ");
+            String input = s.nextLine();
+            var matrix = matrices.get(input);
+            if (matrix == null) {
+                try {
+                    var index = Integer.parseInt(input) - 1;
+                    matrix = arr[index];
+                    return matrix;
+                }
+                catch (NumberFormatException e) {
+                    Printer.clearConsole();
+                    System.out.println("Error: invalid input");
+                    System.out.println("press enter to retry, type \"q\" to quit: ");
+                    input = s.nextLine();
+                    if (input.equals("q")) return null;
+                }
+                catch (IndexOutOfBoundsException e) {
+                    Printer.clearConsole();
+                    System.out.println("Error: invalid number");
+                    System.out.println("press enter to retry, type \"q\" to quit: ");
+                    input = s.nextLine();
+                    if (input.equals("q")) return null;
+                }
+            }
+            else return matrix;
+        }
     }
 }
