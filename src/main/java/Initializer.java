@@ -35,19 +35,19 @@ public class Initializer {
         var buffer = s.nextLine();
         String[] splitBuffer = buffer.split(",");
         if (splitBuffer.length != 2) {
-            throw new Exception("bad input");
+            throw new Exception("invalid formatting");
         }
         Printer.clearConsole();
         row = Integer.parseInt(splitBuffer[0]);
         col = Integer.parseInt(splitBuffer[1]);
         matrix = new Rational[row][col];
-        System.out.println("input the rows (split entries with \",\"):");
+        System.out.println("input the rows, " + col + " entries each (separate entries with \",\"):");
         for (int i = 0; i < row; i++) {
             System.out.print("row " + (i+1) + ": ");
             buffer = s.nextLine();
             splitBuffer = buffer.split(",");
             if (splitBuffer.length != col) {
-                throw new Exception("bad input");
+                throw new Exception("expected " + col + " entries");
             }
             for (int j = 0; j < col; j++) {
                 matrix[i][j] = Parser.parse(splitBuffer[j]);
@@ -59,11 +59,6 @@ public class Initializer {
     }
 
     private static boolean isName(String str) {
-        try {
-            Integer.parseInt(str);
-        } catch (NumberFormatException e) {
-            return true;
-        }
-        return false;
+        return !Character.isDigit(str.charAt(0));
     }
 }

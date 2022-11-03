@@ -21,6 +21,7 @@ public class Controller {
     public static void main(String[] args) {
         s = new Scanner(System.in);
         Parser.initialize();
+        matrices = new MatrixCollection();
 
         while (true) {
             printModes();
@@ -56,7 +57,9 @@ public class Controller {
                 System.exit(1);
             }
             case rowOps -> {
-                OperationsController.start(matrixPicker(), s);
+                var matrix = matrixPicker();
+                if (matrix == null) return;
+                OperationsController.start(matrix, s);
             }
             case guide -> {
                 System.out.println("wip");
@@ -77,7 +80,18 @@ public class Controller {
         }
     }
 
+    /**
+     *
+     * @return a valid matrix or null. Returning null should go back to main menu
+     */
+
     public static Matrix matrixPicker() {
+        if (matrices.size() == 0) {
+            System.out.println("There are no matrices, press enter to go back: ");
+            s.nextLine();
+            Printer.clearConsole();
+            return null;
+        }
         while (true) {
             var arr = matrices.getMatrices();
             for (int i = 0; i < arr.length; i++) {
@@ -97,6 +111,7 @@ public class Controller {
                     System.out.println("Error: invalid input");
                     System.out.println("press enter to retry, type \"q\" to quit: ");
                     input = s.nextLine();
+                    Printer.clearConsole();
                     if (input.equals("q")) return null;
                 }
                 catch (IndexOutOfBoundsException e) {
@@ -104,10 +119,14 @@ public class Controller {
                     System.out.println("Error: invalid number");
                     System.out.println("press enter to retry, type \"q\" to quit: ");
                     input = s.nextLine();
+                    Printer.clearConsole();
                     if (input.equals("q")) return null;
                 }
             }
-            else return matrix;
+            else {
+                    Printer.clearConsole();
+                    return matrix;
+            }
         }
     }
 }

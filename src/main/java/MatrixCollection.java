@@ -27,4 +27,8 @@ public class MatrixCollection {
     public Matrix[] getMatrices() {
         return hashMap.values().toArray(new Matrix[0]);
     }
+
+    public int size() {
+        return hashMap.size();
+    }
 }
