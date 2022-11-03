@@ -2,7 +2,6 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Matrix {
@@ -11,7 +10,7 @@ public class Matrix {
     private Stack<Rational<MultivariatePolynomial<BigInteger>>[][]> matrixStates;
     private Stack<String> operations;
     private String name;
-    private static int matrixCounter = 0;
+    private static int matrixCounter = 1;
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
         this(squareArr, nextDefaultName());
     }

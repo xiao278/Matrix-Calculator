@@ -3,6 +3,19 @@ import java.util.Scanner;
 public class Controller {
     private static Scanner s;
     private static MatrixCollection matrices;
+
+    public static void main(String[] args) {
+        s = new Scanner(System.in);
+        Parser.initialize();
+        matrices = new MatrixCollection();
+        Printer.clearConsole();
+
+        while (true) {
+            printModes();
+            processModes();
+        }
+    }
+
     private static final String
             rowOps = "Perform Elementary Operation",
             transpose = "Transpose",
@@ -18,22 +31,11 @@ public class Controller {
             exit
     };
 
-    public static void main(String[] args) {
-        s = new Scanner(System.in);
-        Parser.initialize();
-        matrices = new MatrixCollection();
-
-        while (true) {
-            printModes();
-            processModes();
-        }
-    }
-
     private static void printModes() {
         for (int i = 0; i < options.length; i++) {
             System.out.println((i+1) + ") " + options[i]);
         }
-        System.out.println("Choose one of the options (enter a number): ");
+        System.out.print("Choose one of the options (enter a number): ");
     }
 
     private static void processModes() {
@@ -73,6 +75,7 @@ public class Controller {
                     Printer.clearConsole();
                 }
                 catch (Exception e) {
+                    Printer.clearConsole();
                     System.out.println("Error: " + e.getMessage());
                     return;
                 }
@@ -87,7 +90,7 @@ public class Controller {
 
     public static Matrix matrixPicker() {
         if (matrices.size() == 0) {
-            System.out.println("There are no matrices, press enter to go back: ");
+            System.out.print("There are no matrices, press enter to go back: ");
             s.nextLine();
             Printer.clearConsole();
             return null;
