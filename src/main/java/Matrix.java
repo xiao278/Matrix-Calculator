@@ -11,9 +11,9 @@ public class Matrix {
     private Stack<Rational<MultivariatePolynomial<BigInteger>>[][]> matrixStates;
     private Stack<String> operations;
     private String name;
-    private static int matrixCounter;
+    private static int matrixCounter = 0;
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
-        this(squareArr, "matrix" + (matrixCounter++));
+        this(squareArr, nextDefaultName());
     }
 
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr, String name) {
@@ -84,6 +84,9 @@ public class Matrix {
         return popOperation();
     }
 
+    public static String nextDefaultName() {
+        return "matrix" + matrixCounter;
+    }
 
     public int getRows() {
         return rows;
@@ -95,5 +98,9 @@ public class Matrix {
 
     public String preview() {
         return name + " (" + rows + "×" + cols + ")";
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

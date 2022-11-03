@@ -2,28 +2,26 @@ import java.util.Scanner;
 
 public class Controller {
     private static Scanner s;
-    private static Matrix matrix;
+    private static MatrixCollection matrices;
     private static final String
             rowOps = "Perform Elementary Operation",
             transpose = "Transpose",
             guide = "User guide",
+            createMatrix = "Create new matrix",
             exit = "Quit";
 
     private static final String[] options = new String[]{
-            rowOps, transpose, guide, exit
+            createMatrix,
+            rowOps,
+            transpose,
+            guide,
+            exit
     };
 
     public static void main(String[] args) {
         s = new Scanner(System.in);
         Parser.initialize();
-        try {
-            matrix = Initializer.start(s);
-            Printer.clearConsole();
-        }
-        catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            return;
-        }
+
         while (true) {
             printModes();
             processModes();
@@ -58,7 +56,7 @@ public class Controller {
                 System.exit(1);
             }
             case rowOps -> {
-                OperationsController.start(matrix, s);
+                OperationsController.start(matrices, s);
             }
             case guide -> {
                 System.out.println("wip");
@@ -66,6 +64,20 @@ public class Controller {
             case transpose -> {
                 System.out.println("wip");
             }
+            case createMatrix -> {
+                try {
+                    Initializer.start(matrices, s);
+                    Printer.clearConsole();
+                }
+                catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                    return;
+                }
+            }
         }
+    }
+
+    public static Matrix matrixPicker() {
+        
     }
 }
