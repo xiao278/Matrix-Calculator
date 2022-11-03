@@ -123,7 +123,7 @@ public class OperationsController {
                 for (int i = 0; i < matrix[destinationRow].length; i++) {
                     matrix[destinationRow][i] = matrix[destinationRow][i].multiply(scale);
                 }
-                operation = "R" + (destinationRow + 1) + " ↦ " + "(" + Printer.rationalToString(scale) + ")R" + (destinationRow + 1);
+                operation = "R" + (destinationRow + 1) + " -> " + "(" + Printer.rationalToString(scale) + ")R" + (destinationRow + 1);
             }
 
             else if (op.equals("+") || op.equals("-")) {
@@ -145,7 +145,7 @@ public class OperationsController {
                 for (int i = 0; i < matrixSystem.getCols(); i++) {
                     matrix[destinationRow][i] = matrix[destinationRow][i].add(matrix[targetRow][i].multiply(scale));
                 }
-                operation = "R" + (destinationRow + 1) + " ↦ " + "R" + (destinationRow + 1) + (op.equals("-") ? " - " : " + ")
+                operation = "R" + (destinationRow + 1) + " -> " + "R" + (destinationRow + 1) + (op.equals("-") ? " - " : " + ")
                         + "(" + scaleString + ")R" + (targetRow + 1);
             }
 
@@ -157,7 +157,7 @@ public class OperationsController {
                 var temp = matrix[destinationRow];
                 matrix[destinationRow] = matrix[targetRow];
                 matrix[targetRow] = temp;
-                operation = "R" + (destinationRow + 1) + " ↔ R" + (targetRow + 1);
+                operation = "R" + (destinationRow + 1) + " <-> R" + (targetRow + 1);
             }
 
             else throw new Exception("invalid operation");
@@ -181,7 +181,7 @@ public class OperationsController {
                 for (int i = 0; i < matrixSystem.getRows(); i++) {
                     matrix[i][destinationCol] = matrix[i][destinationCol].multiply(scale);
                 }
-                operation = "C" + (destinationCol + 1) + " ↦ " + "(" + Printer.rationalToString(scale) + ")C" + (destinationCol + 1);
+                operation = "C" + (destinationCol + 1) + " -> " + "(" + Printer.rationalToString(scale) + ")C" + (destinationCol + 1);
             }
 
             else if (op.equals("+") || op.equals("-")) {
@@ -203,7 +203,7 @@ public class OperationsController {
                 for (int i = 0; i < matrixSystem.getRows(); i++) {
                     matrix[i][destinationCol] = matrix[i][destinationCol].add(matrix[i][targetCol].multiply(scale));
                 }
-                operation = "C" + (destinationCol + 1) + " ↦ " + "C" + (destinationCol + 1) + (op.equals("-") ? " - " : " + ")
+                operation = "C" + (destinationCol + 1) + " -> " + "C" + (destinationCol + 1) + (op.equals("-") ? " - " : " + ")
                         + "(" + scaleString + ")C" + (targetCol + 1);
             }
 
@@ -217,7 +217,7 @@ public class OperationsController {
                     matrix[i][targetCol] = matrix[i][destinationCol];
                     matrix[i][destinationCol] = temp;
                 }
-                operation = "C" + (destinationCol + 1) + " ↔ C" + (targetCol + 1);
+                operation = "C" + (destinationCol + 1) + " <->1 C" + (targetCol + 1);
             }
 
             else throw new Exception("invalid operation");

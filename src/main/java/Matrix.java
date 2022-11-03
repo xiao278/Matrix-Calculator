@@ -96,7 +96,7 @@ public class Matrix {
     }
 
     public String preview() {
-        return name + " (" + rows + "×" + cols + ")";
+        return name + " (" + rows + "x" + cols + ")";
     }
 
     public String getName() {

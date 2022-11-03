@@ -102,6 +102,7 @@ public class Controller {
             }
             System.out.print("enter matrix name or listing number: ");
             String input = s.nextLine();
+            Printer.clearConsole();
             var matrix = matrices.get(input);
             if (matrix == null) {
                 try {
@@ -110,7 +111,6 @@ public class Controller {
                     return matrix;
                 }
                 catch (NumberFormatException e) {
-                    Printer.clearConsole();
                     System.out.println("Error: invalid input");
                     System.out.println("press enter to retry, type \"q\" to quit: ");
                     input = s.nextLine();
@@ -118,7 +118,6 @@ public class Controller {
                     if (input.equals("q")) return null;
                 }
                 catch (IndexOutOfBoundsException e) {
-                    Printer.clearConsole();
                     System.out.println("Error: invalid number");
                     System.out.println("press enter to retry, type \"q\" to quit: ");
                     input = s.nextLine();
@@ -127,7 +126,6 @@ public class Controller {
                 }
             }
             else {
-                    Printer.clearConsole();
                     return matrix;
             }
         }

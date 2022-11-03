@@ -2,7 +2,6 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 /**
