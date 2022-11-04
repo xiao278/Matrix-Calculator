@@ -1,6 +1,5 @@
 import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
-import cc.redberry.rings.io.Coder;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 import java.util.Scanner;
 
@@ -10,26 +9,7 @@ public class Initializer {
         Rational<MultivariatePolynomial<BigInteger>>[][] matrix;
         int row;
         int col;
-        String name;
-
-        while (true) {
-            System.out.print("enter a name for matrix: ");
-            name = s.nextLine().strip();
-            Printer.clearConsole();
-            if (name.isEmpty()) {
-                name = Matrix.nextDefaultName();
-                break;
-            }
-            if (isName(name)) {
-                if (matrices.contains(name)) System.out.println("Error: duplicate naming");
-                else {
-                    break;
-                }
-            }
-            else {
-                System.out.println("Error: invalid name, first character cannot be a number");
-            }
-        }
+        String name = Matrix.namePicker(matrices, s);
 
         System.out.print("dimension of matrix? \"row,col\": ");
         var buffer = s.nextLine();
@@ -56,9 +36,5 @@ public class Initializer {
         //insert into collections
         var temp = new Matrix(matrix, name);
         matrices.add(temp);
-    }
-
-    private static boolean isName(String str) {
-        return !Character.isDigit(str.charAt(0));
     }
 }

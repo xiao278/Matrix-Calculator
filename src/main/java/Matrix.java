@@ -2,6 +2,7 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
+import java.util.Scanner;
 import java.util.Stack;
 
 public class Matrix {
@@ -101,5 +102,32 @@ public class Matrix {
 
     public String getName() {
         return this.name;
+    }
+
+    public static String namePicker(MatrixCollection matrices, Scanner s) {
+        String name;
+        while (true) {
+            System.out.print("enter a name for matrix: ");
+            name = s.nextLine().strip();
+            Printer.clearConsole();
+            if (name.isEmpty()) {
+                name = Matrix.nextDefaultName();
+                break;
+            }
+            if (isName(name)) {
+                if (matrices.contains(name)) System.out.println("Error: duplicate naming");
+                else {
+                    break;
+                }
+            }
+            else {
+                System.out.println("Error: invalid name, first character cannot be a number");
+            }
+        }
+        return name;
+    }
+
+    private static boolean isName(String str) {
+        return !Character.isDigit(str.charAt(0));
     }
 }
