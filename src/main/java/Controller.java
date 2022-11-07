@@ -18,7 +18,7 @@ public class Controller {
 
     private static final String
             rowOps = "Perform Elementary Operation",
-            transpose = "Transpose",
+            misc = "Misc. Functions",
             guide = "User guide",
             createMatrix = "Create new matrix",
             exit = "Quit";
@@ -26,7 +26,7 @@ public class Controller {
     private static final String[] options = new String[]{
             createMatrix,
             rowOps,
-            transpose,
+            misc,
             guide,
             exit
     };
@@ -66,7 +66,7 @@ public class Controller {
             case guide -> {
                 System.out.println("wip");
             }
-            case transpose -> {
+            case misc -> {
                 System.out.println("wip");
             }
             case createMatrix -> {
