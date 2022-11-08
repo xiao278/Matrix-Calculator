@@ -9,7 +9,6 @@ public class Initializer {
         Rational<MultivariatePolynomial<BigInteger>>[][] matrix;
         int row;
         int col;
-        String name = Matrix.namePicker(matrices, s);
 
         System.out.print("dimension of matrix? \"row,col\": ");
         var buffer = s.nextLine();
@@ -34,7 +33,7 @@ public class Initializer {
             }
         }
         //insert into collections
-        var temp = new Matrix(matrix, name);
+        var temp = Matrix.namePicker(matrices, s, matrix);
         matrices.add(temp);
     }
 }

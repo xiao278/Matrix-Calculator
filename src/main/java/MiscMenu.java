@@ -49,20 +49,20 @@ public class MiscMenu {
 
         switch (options[choice - 1]) {
             case product -> {
-                String name = Matrix.namePicker(matrices, s, "enter product matrix name: ");
                 Matrix A = Controller.matrixPicker("Pick left matrix:");
                 if (A == null) return false;
                 int inner = A.getCols();
                 Matrix B = Controller.matrixPicker("Pick right matrix (" + inner + "xN): ");
                 if (B == null) return false;
-                Matrix product = Multiplication.product(A, B, name);
+                var product = Multiplication.product(A, B);
                 if (product != null) {
-                    matrices.add(product);
+                    Matrix.namePicker(matrices, s, product, "enter product matrix name: ");
                     Printer.clearConsole();
                     System.out.println("product:");
-                    Printer.printMatrix(product.getMatrix());
+                    Printer.printMatrix(product);
                     System.out.println("press enter to continue");
                     s.nextLine();
+                    Printer.clearConsole();
                 }
                 return false;
             }

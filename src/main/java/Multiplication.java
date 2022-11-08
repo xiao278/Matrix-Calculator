@@ -4,7 +4,7 @@ import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
 public class Multiplication {
 
-    public static Matrix product(Matrix A, Matrix B, String name) {
+    public static Rational<MultivariatePolynomial<BigInteger>>[][] product(Matrix A, Matrix B) {
         if (A.getCols() != B.getRows()) return null;
         int inner = A.getCols();
         Rational<MultivariatePolynomial<BigInteger>>[][] product = new Rational[A.getCols()][B.getCols()];
@@ -18,6 +18,6 @@ public class Multiplication {
             }
         }
 
-        return new Matrix(product, name);
+        return product;
     }
 }

@@ -55,7 +55,7 @@ public class Printer {
                 out.append(toStringMatrix[i][j]);
                 int spaceNeeded = columnLength[j] - toStringMatrix[i][j].length();
                 out.append(" ".repeat(Math.max(0, spaceNeeded)));
-                if (j < matrix[i].length - 1) out.append(", ");
+                if (j < matrix[i].length - 1) out.append(" | ");
             }
             out.append(" ]");
             System.out.println(out);

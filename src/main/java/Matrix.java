@@ -14,6 +14,7 @@ public class Matrix {
     private static int matrixCounter = 1;
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
         this(squareArr, nextDefaultName());
+        matrixCounter++;
     }
 
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr, String name) {
@@ -104,15 +105,21 @@ public class Matrix {
         return this.name;
     }
 
-    public static String namePicker(MatrixCollection matrices, Scanner s, String prompt) {
+    /**
+     *
+     * @param matrices
+     * @param s
+     * @param prompt
+     * @return null if default name requested, otherwise return desired name
+     */
+    public static Matrix namePicker(MatrixCollection matrices, Scanner s, Rational<MultivariatePolynomial<BigInteger>>[][] squareArr, String prompt) {
         String name;
         while (true) {
             System.out.print(prompt);
             name = s.nextLine().strip();
             Printer.clearConsole();
             if (name.isEmpty()) {
-                name = Matrix.nextDefaultName();
-                break;
+                return new Matrix(squareArr);
             }
             if (isName(name)) {
                 if (matrices.contains(name)) System.out.println("Error: duplicate naming");
@@ -124,11 +131,11 @@ public class Matrix {
                 System.out.println("Error: invalid name, first character cannot be a number");
             }
         }
-        return name;
+        return new Matrix(squareArr, name);
     }
 
-    public static String namePicker(MatrixCollection matrices, Scanner s) {
-        return namePicker(matrices, s, "enter new matrix name: ");
+    public static Matrix namePicker(MatrixCollection matrices, Scanner s, Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
+        return namePicker(matrices, s, squareArr,"enter new matrix name: ");
     }
 
     private static boolean isName(String str) {
