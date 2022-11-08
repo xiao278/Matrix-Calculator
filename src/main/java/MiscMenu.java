@@ -56,7 +56,7 @@ public class MiscMenu {
                 if (B == null) return false;
                 var product = Multiplication.product(A, B);
                 if (product != null) {
-                    Matrix.namePicker(matrices, s, product, "enter product matrix name: ");
+                    matrices.add(Matrix.namePicker(matrices, s, product, "enter product matrix name: "));
                     Printer.clearConsole();
                     System.out.println("product:");
                     Printer.printMatrix(product);
