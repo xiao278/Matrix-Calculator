@@ -104,10 +104,10 @@ public class Matrix {
         return this.name;
     }
 
-    public static String namePicker(MatrixCollection matrices, Scanner s) {
+    public static String namePicker(MatrixCollection matrices, Scanner s, String prompt) {
         String name;
         while (true) {
-            System.out.print("enter a name for matrix: ");
+            System.out.print(prompt);
             name = s.nextLine().strip();
             Printer.clearConsole();
             if (name.isEmpty()) {
@@ -125,6 +125,10 @@ public class Matrix {
             }
         }
         return name;
+    }
+
+    public static String namePicker(MatrixCollection matrices, Scanner s) {
+        return namePicker(matrices, s, "enter new matrix name: ");
     }
 
     private static boolean isName(String str) {

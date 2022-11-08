@@ -45,12 +45,12 @@ public class Controller {
         try {
             choice = Integer.parseInt(str);
         } catch (NumberFormatException e) {
-            System.out.println("Error: not a number, please try again");
+            System.out.println("Error: not a number");
             return;
         }
 
         if (choice < 1 || choice > options.length) {
-            System.out.println("Error: invalid choice, please try again");
+            System.out.println("Error: invalid choice");
             return;
         }
 
@@ -67,7 +67,7 @@ public class Controller {
                 System.out.println("wip");
             }
             case misc -> {
-                System.out.println("wip");
+                MiscMenu.start(matrices, s);
             }
             case createMatrix -> {
                 try {
@@ -88,7 +88,7 @@ public class Controller {
      * @return a valid matrix or null. Returning null should go back to main menu
      */
 
-    public static Matrix matrixPicker() {
+    public static Matrix matrixPicker(String prompt) {
         if (matrices.size() == 0) {
             System.out.print("There are no matrices, press enter to go back: ");
             s.nextLine();
@@ -100,7 +100,7 @@ public class Controller {
             for (int i = 0; i < arr.length; i++) {
                 System.out.println((i + 1) + ") " + arr[i].preview());
             }
-            System.out.print("enter matrix name or listing number: ");
+            System.out.print(prompt);
             String input = s.nextLine();
             Printer.clearConsole();
             var matrix = matrices.get(input);
@@ -130,4 +130,9 @@ public class Controller {
             }
         }
     }
+
+    public static Matrix matrixPicker() {
+        return matrixPicker("enter matrix name or listing number: ");
+    }
+
 }
