@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class Printer {
     //matrix column padding
     final static int padding = 0;
+    private static final boolean IDE_MODE = true;
 
     public static void clearConsole()
     {
@@ -29,7 +30,7 @@ public class Printer {
     public static boolean runningFromIntelliJ()
     {
         //change to false on building .jar
-        return true;
+        return IDE_MODE;
     }
 
     public static void printMatrix(Rational[][] matrix) {

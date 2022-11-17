@@ -54,13 +54,13 @@ public class MiscMenu {
                 int inner = A.getCols();
                 Matrix B = Controller.matrixPicker("Pick right matrix (" + inner + "xN): ");
                 if (B == null) return false;
-                var product = Multiplication.product(A, B);
+                var product = MatrixFunctions.product(A, B);
                 if (product != null) {
                     matrices.add(Controller.namePicker(product, "enter product matrix name: "));
                     Printer.clearConsole();
                     System.out.println("product:");
                     Printer.printMatrix(product);
-                    System.out.println("press enter to continue");
+                    System.out.println("\n---press enter to continue---");
                     s.nextLine();
                     Printer.clearConsole();
                 }

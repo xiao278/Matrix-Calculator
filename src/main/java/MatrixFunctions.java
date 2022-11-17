@@ -2,7 +2,7 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
-public class Multiplication {
+public class MatrixFunctions {
 
     public static Rational<MultivariatePolynomial<BigInteger>>[][] product(Matrix left, Matrix right) {
         if (left.getCols() != right.getRows()) return null;
