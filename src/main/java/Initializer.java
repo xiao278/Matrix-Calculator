@@ -10,9 +10,9 @@ public class Initializer {
         int row;
         int col;
 
-        System.out.print("dimension of matrix? \"row,col\": ");
+        System.out.print("dimension of matrix? <row>x<col>: ");
         var buffer = s.nextLine();
-        String[] splitBuffer = buffer.split(",");
+        String[] splitBuffer = buffer.split("x");
         if (splitBuffer.length != 2) {
             throw new Exception("invalid formatting");
         }
