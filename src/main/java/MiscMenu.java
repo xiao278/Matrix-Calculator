@@ -31,6 +31,10 @@ public class MiscMenu {
         System.out.print("Choose one of the options (enter a number): ");
     }
 
+    /**
+     *
+     * @return true if user chooses quit option
+     */
     private static boolean processModes() {
         String str = s.nextLine();
         int choice;
@@ -49,7 +53,7 @@ public class MiscMenu {
 
         switch (options[choice - 1]) {
             case product -> {
-                Matrix A = Controller.matrixPicker("Pick left matrix:");
+                Matrix A = Controller.matrixPicker("Pick left matrix: ");
                 if (A == null) return false;
                 int inner = A.getCols();
                 Matrix B = Controller.matrixPicker("Pick right matrix (" + inner + "xN): ");
@@ -67,7 +71,16 @@ public class MiscMenu {
                 return false;
             }
             case transpose -> {
-                System.out.println("wip");
+                Matrix m = Controller.matrixPicker("Pick matrix to be inverted: ");
+                if (m == null) return false;
+                var mt = MatrixFunctions.transpose(m);
+                matrices.add(Controller.namePicker(mt, "enter transposed matrix name: "));
+                Printer.clearConsole();
+                System.out.println("transposed matrix: ");
+                Printer.printMatrix(mt);
+                System.out.println("\n---press enter to continue---");
+                s.nextLine();
+                Printer.clearConsole();
             }
             case quit -> {
                 return true;

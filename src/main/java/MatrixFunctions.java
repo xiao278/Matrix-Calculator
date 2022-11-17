@@ -20,4 +20,14 @@ public class MatrixFunctions {
 
         return product;
     }
+
+    public static Rational<MultivariatePolynomial<BigInteger>>[][] transpose (Matrix m) {
+        Rational<MultivariatePolynomial<BigInteger>>[][] mt = new Rational[m.getCols()][m.getRows()];
+        for (int i = 0; i < m.getCols(); i++) {
+            for (int j = 0; j < m.getRows(); j++) {
+                mt[i][j] = m.get(j, i);
+            }
+        }
+        return mt;
+    }
 }
