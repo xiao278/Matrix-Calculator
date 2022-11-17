@@ -105,40 +105,15 @@ public class Matrix {
         return this.name;
     }
 
-    /**
-     *
-     * @param matrices
-     * @param s
-     * @param prompt
-     * @return null if default name requested, otherwise return desired name
-     */
-    public static Matrix namePicker(MatrixCollection matrices, Scanner s, Rational<MultivariatePolynomial<BigInteger>>[][] squareArr, String prompt) {
-        String name;
-        while (true) {
-            System.out.print(prompt);
-            name = s.nextLine().strip();
-            Printer.clearConsole();
-            if (name.isEmpty()) {
-                return new Matrix(squareArr);
-            }
-            if (isName(name)) {
-                if (matrices.contains(name)) System.out.println("Error: duplicate naming");
-                else {
-                    break;
-                }
-            }
-            else {
-                System.out.println("Error: invalid name, first character cannot be a number");
-            }
-        }
-        return new Matrix(squareArr, name);
-    }
-
-    public static Matrix namePicker(MatrixCollection matrices, Scanner s, Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
-        return namePicker(matrices, s, squareArr,"enter new matrix name: ");
-    }
-
-    private static boolean isName(String str) {
+    public static boolean isName(String str) {
         return !Character.isDigit(str.charAt(0));
+    }
+
+    public Stack<Rational<MultivariatePolynomial<BigInteger>>[][]> getMatrixStates() {
+        return matrixStates;
+    }
+
+    public Stack<String> getOperations() {
+        return operations;
     }
 }

@@ -1,3 +1,7 @@
+import cc.redberry.rings.Rational;
+import cc.redberry.rings.bigint.BigInteger;
+import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
+
 import java.util.Scanner;
 
 public class Controller {
@@ -21,11 +25,13 @@ public class Controller {
             misc = "Misc. Functions",
             guide = "User guide",
             createMatrix = "Create new matrix",
+            view = "View matrix",
             exit = "Quit";
 
     private static final String[] options = new String[]{
             createMatrix,
             rowOps,
+            view,
             misc,
             guide,
             exit
@@ -80,6 +86,22 @@ public class Controller {
                     return;
                 }
             }
+            case view -> {
+                var mat = matrixPicker();
+                if (mat == null) return;
+                Printer.clearConsole();
+                var states = mat.getMatrixStates();
+                var operations =  mat.getOperations().toArray();
+                for (int i = 0; i < operations.length; i++) {
+                    System.out.println(operations[i] + ": ");
+                    Printer.printMatrix(states.get(i));
+                    System.out.println();
+                }
+                System.out.println("Earlier additions are further up");
+                System.out.print("Press enter to go back...");
+                s.nextLine();
+                Printer.clearConsole();
+            }
         }
     }
 
@@ -90,7 +112,7 @@ public class Controller {
 
     public static Matrix matrixPicker(String prompt) {
         if (matrices.size() == 0) {
-            System.out.print("There are no matrices, press enter to go back: ");
+            System.out.print("There are no matrices, press enter to go back...");
             s.nextLine();
             Printer.clearConsole();
             return null;
@@ -135,4 +157,34 @@ public class Controller {
         return matrixPicker("enter matrix name or listing number: ");
     }
 
+    /**
+     *
+     * @param prompt
+     * @return null if default name requested, otherwise return desired name
+     */
+    public static Matrix namePicker(Rational<MultivariatePolynomial<BigInteger>>[][] squareArr, String prompt) {
+        String name;
+        while (true) {
+            System.out.print(prompt);
+            name = s.nextLine().strip();
+            Printer.clearConsole();
+            if (name.isEmpty()) {
+                return new Matrix(squareArr);
+            }
+            if (Matrix.isName(name)) {
+                if (matrices.contains(name)) System.out.println("Error: duplicate naming");
+                else {
+                    break;
+                }
+            }
+            else {
+                System.out.println("Error: invalid name, first character cannot be a number");
+            }
+        }
+        return new Matrix(squareArr, name);
+    }
+
+    public static Matrix namePicker(Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
+        return namePicker(squareArr,"enter new matrix name: ");
+    }
 }

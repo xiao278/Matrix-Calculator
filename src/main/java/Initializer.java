@@ -33,7 +33,7 @@ public class Initializer {
             }
         }
         //insert into collections
-        var temp = Matrix.namePicker(matrices, s, matrix);
+        var temp = Controller.namePicker(matrix);
         matrices.add(temp);
     }
 }
