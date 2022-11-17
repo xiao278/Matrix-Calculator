@@ -70,7 +70,7 @@ public class Controller {
                 OperationsController.start(matrix, s);
             }
             case guide -> {
-                System.out.println("wip");
+                printUserGuide();
             }
             case misc -> {
                 MiscMenu.start(matrices, s);
@@ -98,7 +98,7 @@ public class Controller {
                     System.out.println();
                 }
                 System.out.println("Earlier additions are further up");
-                System.out.print("Press enter to go back...");
+                System.out.println("---Press enter to go back---");
                 s.nextLine();
                 Printer.clearConsole();
             }
@@ -112,7 +112,8 @@ public class Controller {
 
     public static Matrix matrixPicker(String prompt) {
         if (matrices.size() == 0) {
-            System.out.print("There are no matrices, press enter to go back...");
+            System.out.println("There are no matrices.");
+            System.out.println("---Press enter to go back---");
             s.nextLine();
             Printer.clearConsole();
             return null;
@@ -186,5 +187,20 @@ public class Controller {
 
     public static Matrix namePicker(Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
         return namePicker(squareArr,"enter new matrix name: ");
+    }
+
+    private static void printUserGuide() {
+        System.out.println("i) Important: at least one matrix must be created using option 1 in main menu before using the other functions");
+        System.out.println("ii) Creating new matrix: ");
+        System.out.println("    1. Entering dimensions: Formatting is mxn where m=#rows n=#cols");
+        System.out.println("        Example: an input of \"3x4\" means a matrix of 3 rows and 4 columns.");
+        System.out.println("    2. Entering rows: You will enter each row at once separated by commas");
+        System.out.println("        Example: \"a,b,c,1,2\" is a valid row entry to a 4x5 matrix, but \"a,b\" is not because it only has 2 entries.");
+        System.out.println("    3. Naming matrices: Name should start with a letter, entering nothing gives a default name");
+        System.out.println("        Default names will be in the format of \"matrix<N>\" where N will increment for each additional default-name matrix.");
+        System.out.println("iii) Errors: errors will be displayed at the top. The topmost line usually tells you formatting and choice errors");
+        System.out.println("\n---Press enter to go back---");
+        s.nextLine();
+        Printer.clearConsole();
     }
 }
