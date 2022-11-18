@@ -110,7 +110,7 @@ public class Controller {
      * @return a valid matrix or null. Returning null should go back to main menu
      */
 
-    public static Matrix matrixPicker(String prompt) {
+    public static Matrix matrixPicker(String prompt, MatrixFilter f) {
         if (matrices.size() == 0) {
             System.out.println("There are no matrices.");
             System.out.println("---Press enter to go back---");
@@ -158,6 +158,15 @@ public class Controller {
         return matrixPicker("enter matrix name or listing number: ");
     }
 
+    public static Matrix matrixPicker(String prompt) {
+        return matrixPicker(prompt, new MatrixFilter() {
+            @Override
+            public boolean isValid(Matrix m) {
+                return true;
+            }
+        });
+    }
+
     /**
      *
      * @param prompt
@@ -202,5 +211,11 @@ public class Controller {
         System.out.println("\n---Press enter to go back---");
         s.nextLine();
         Printer.clearConsole();
+    }
+}
+
+interface MatrixFilter {
+    default boolean isValid(Matrix m) {
+        return true;
     }
 }
