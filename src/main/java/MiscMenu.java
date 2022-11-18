@@ -58,7 +58,12 @@ public class MiscMenu {
                 Matrix A = Controller.matrixPicker("Pick left matrix: ");
                 if (A == null) return false;
                 int inner = A.getCols();
-                Matrix B = Controller.matrixPicker("Pick right matrix (" + inner + "xAny): ");
+                Matrix B = Controller.matrixPicker("Pick right matrix: ", new MatrixFilter() {
+                    @Override
+                    public boolean isValid(Matrix m) {
+                        return m.getRows() == inner;
+                    }
+                });
                 if (B == null) return false;
                 var product = MatrixFunctions.product(A, B);
                 if (product != null) {
@@ -88,7 +93,12 @@ public class MiscMenu {
                 return true;
             }
             case determinant -> {
-                var mat = Controller.matrixPicker("enter a square matrix: ");
+                var mat = Controller.matrixPicker("enter a square matrix: ", new MatrixFilter() {
+                    @Override
+                    public boolean isValid(Matrix m) {
+                        return (m.getRows() == m.getCols());
+                    }
+                });
                 if (mat == null) return false;
                 var det = MatrixFunctions.findDeterminant(mat);
                 if (det == null) return false;

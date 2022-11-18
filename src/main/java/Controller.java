@@ -2,6 +2,7 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Controller {
@@ -111,17 +112,21 @@ public class Controller {
      */
 
     public static Matrix matrixPicker(String prompt, MatrixFilter f) {
-        if (matrices.size() == 0) {
-            System.out.println("There are no matrices.");
-            System.out.println("---Press enter to go back---");
+        var arr = matrices.getMatrices();
+        ArrayList<Matrix> filteredArr = new ArrayList<>();
+        for (Matrix m : arr) {
+            if (f.isValid(m)) filteredArr.add(m);
+        }
+        if (filteredArr.size() == 0) {
+            System.out.println("There are no valid matrices.");
+            System.out.println("\n---Press enter to go back---");
             s.nextLine();
             Printer.clearConsole();
             return null;
         }
         while (true) {
-            var arr = matrices.getMatrices();
-            for (int i = 0; i < arr.length; i++) {
-                System.out.println((i + 1) + ") " + arr[i].preview());
+            for (int i = 0; i < filteredArr.size(); i++) {
+                System.out.println((i + 1) + ") " + filteredArr.get(i).preview());
             }
             System.out.print(prompt);
             String input = s.nextLine();
@@ -130,7 +135,7 @@ public class Controller {
             if (matrix == null) {
                 try {
                     var index = Integer.parseInt(input) - 1;
-                    matrix = arr[index];
+                    matrix = filteredArr.get(index);
                     return matrix;
                 }
                 catch (NumberFormatException e) {
