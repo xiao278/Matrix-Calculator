@@ -22,7 +22,7 @@ public class OperationsController {
         Printer.clearConsole();
         System.out.println("i) Type \"q\" to return to main menu");
 
-        System.out.println("\nii) Examples for Performing elementary row operations - use \"Rx\" to denote row x (i.e R3 is row 3):");
+        System.out.println("\nii) Some Examples for Performing elementary row operations - use \"R\" to denote row (i.e \"R3\" is row3):");
         System.out.println("    - Scaling: \"R3 *= 8\" means \"scale row3 by 8\"");
         System.out.println("    - Dividing: \"R2 /= a+b\" means \"scale row2 by (1/a+b)\"");
         System.out.println("    - Adding: \"R1 += 5aR4\" means \"add (5a times row4) to row1\"");
