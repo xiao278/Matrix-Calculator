@@ -22,14 +22,15 @@ public class OperationsController {
         Printer.clearConsole();
         System.out.println("i) Type \"q\" to return to main menu");
 
-        System.out.println("\nii) Performing elementary row operations - use \"Rx\" to denote row x (i.e R3 is row 3):");
-        System.out.println("    - Scaling: \"Rx *= c\" means \"scale row x by c\"");
-        System.out.println("    - Dividing: \"Rx /= c\" means \"scale row x by (1/c)\"");
-        System.out.println("    - Adding: \"Rx += cRy\" means \"add (c times row y) to row x\"");
-        System.out.println("    - Subtracting: \"Rx -= cRy\" means \"subtract (c times row y) from row x\"");
-        System.out.println("    - Swapping: \"Rx <> Ry\" means \"swap row x with row y\"");
+        System.out.println("\nii) Examples for Performing elementary row operations - use \"Rx\" to denote row x (i.e R3 is row 3):");
+        System.out.println("    - Scaling: \"R3 *= 8\" means \"scale row3 by 8\"");
+        System.out.println("    - Dividing: \"R2 /= a+b\" means \"scale row2 by (1/a+b)\"");
+        System.out.println("    - Adding: \"R1 += 5aR4\" means \"add (5a times row4) to row1\"");
+        System.out.println("    - Subtracting: \"R3 -= 4R1\" means \"subtract (4 times row1) from row3\"");
+        System.out.println("    - Swapping: \"R6 <> R3\" means \"swap row6 with row3\"");
 
         System.out.println("\niii) performing elementary column operations: replace 'R' with 'C'");
+        System.out.println("    - Example: \"C5 += 7C1\" means \"add (7 times column1) to column5");
 
         System.out.println("\n---Press enter to go back---");
         s.nextLine();
