@@ -58,7 +58,7 @@ public class MiscMenu {
                 Matrix A = Controller.matrixPicker("Pick left matrix: ");
                 if (A == null) return false;
                 int inner = A.getCols();
-                Matrix B = Controller.matrixPicker("Pick right matrix (" + inner + "xN): ");
+                Matrix B = Controller.matrixPicker("Pick right matrix (" + inner + "xAny): ");
                 if (B == null) return false;
                 var product = MatrixFunctions.product(A, B);
                 if (product != null) {
@@ -73,7 +73,7 @@ public class MiscMenu {
                 return false;
             }
             case transpose -> {
-                Matrix m = Controller.matrixPicker("Pick matrix to be inverted: ");
+                Matrix m = Controller.matrixPicker("Pick matrix to be transposed: ");
                 if (m == null) return false;
                 var mt = MatrixFunctions.transpose(m);
                 matrices.add(Controller.namePicker(mt, "enter transposed matrix name: "));
