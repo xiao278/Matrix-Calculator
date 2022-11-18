@@ -30,4 +30,41 @@ public class MatrixFunctions {
         }
         return mt;
     }
+
+    /**
+     *
+     * @param m
+     * @return null if matrix is not square, else returns the determinant
+     */
+    public static Rational<MultivariatePolynomial<BigInteger>> findDeterminant (Matrix m) {
+        if (m.getRows() != m.getCols()) return null;
+        return findDeterminantRecursive(m.getMatrix());
+    }
+    public static Rational<MultivariatePolynomial<BigInteger>> findDeterminantRecursive (Rational<MultivariatePolynomial<BigInteger>>[][] m) {
+        if (m.length == 2) {
+            return m[0][0].multiply(m[1][1]).subtract(m[0][1].multiply(m[1][0]));
+        }
+
+        Rational<MultivariatePolynomial<BigInteger>> zero = Parser.parse("0");
+        Rational<MultivariatePolynomial<BigInteger>> sum = Parser.parse("0");
+
+        for (int i = 0; i < m.length; i++) {
+            Rational<MultivariatePolynomial<BigInteger>>[][] nextMatrix = new Rational[m.length - 1][m.length - 1];
+            if (m[0][i].equals(zero)) continue;
+            for (int copyRow = 0; copyRow < m.length - 1; copyRow++) {
+                for (int copyCol = 0; copyCol < m.length - 1; copyCol++) {
+                    int sourceRow = copyRow + 1;
+                    int sourceCol = copyCol + ((copyCol >= i) ? 1 : 0);
+                    nextMatrix[copyRow][copyCol] = m[sourceRow][sourceCol];
+                }
+            }
+            if (i % 2 == 0) {
+                sum = sum.add(findDeterminantRecursive(nextMatrix).multiply(m[0][i]));
+            }
+            else {
+                sum = sum.subtract(findDeterminantRecursive(nextMatrix).multiply(m[0][i]));
+            }
+        }
+        return sum;
+    }
 }

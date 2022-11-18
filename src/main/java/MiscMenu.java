@@ -16,11 +16,13 @@ public class MiscMenu {
     private static final String
         product = "Matrix Multipliation",
         transpose = "Matrix Transpose",
-        quit = "Go back";
+        quit = "Go back",
+        determinant = "Matrix Determinant";
 
     private static final String[] options = new String[]{
             product,
             transpose,
+            determinant,
             quit
     };
 
@@ -84,6 +86,17 @@ public class MiscMenu {
             }
             case quit -> {
                 return true;
+            }
+            case determinant -> {
+                var mat = Controller.matrixPicker("enter a square matrix: ");
+                if (mat == null) return false;
+                var det = MatrixFunctions.findDeterminant(mat);
+                if (det == null) return false;
+                System.out.println("matrix determinant: ");
+                System.out.println(Printer.rationalToString(det));
+                System.out.println("\n---press enter to continue---");
+                s.nextLine();
+                Printer.clearConsole();
             }
         }
         return false;
