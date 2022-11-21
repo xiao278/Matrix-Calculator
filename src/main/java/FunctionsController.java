@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class MiscMenu {
+public class FunctionsController {
     private static Scanner s;
     private static MatrixCollection matrices;
 
@@ -17,9 +17,11 @@ public class MiscMenu {
         product = "Matrix Multipliation",
         transpose = "Matrix Transpose",
         quit = "Go back",
+        addition = "Matrix Addition",
         determinant = "Matrix Determinant";
 
     private static final String[] options = new String[]{
+            addition,
             product,
             transpose,
             determinant,
@@ -67,9 +69,9 @@ public class MiscMenu {
                 if (B == null) return false;
                 var product = MatrixFunctions.product(A, B);
                 if (product != null) {
-                    matrices.add(Controller.namePicker(product, "enter product matrix name: "));
+                    matrices.add(Controller.namePicker(product, "Enter name for new product matrix: "));
                     Printer.clearConsole();
-                    System.out.println("product:");
+                    System.out.println("Product:");
                     Printer.printMatrix(product);
                     System.out.println("\n---press enter to continue---");
                     s.nextLine();
@@ -81,9 +83,9 @@ public class MiscMenu {
                 Matrix m = Controller.matrixPicker("Pick matrix to be transposed: ");
                 if (m == null) return false;
                 var mt = MatrixFunctions.transpose(m);
-                matrices.add(Controller.namePicker(mt, "enter transposed matrix name: "));
+                matrices.add(Controller.namePicker(mt, "Enter transposed matrix name: "));
                 Printer.clearConsole();
-                System.out.println("transposed matrix: ");
+                System.out.println("Transposed matrix: ");
                 Printer.printMatrix(mt);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
@@ -93,7 +95,7 @@ public class MiscMenu {
                 return true;
             }
             case determinant -> {
-                var mat = Controller.matrixPicker("enter a square matrix: ", new MatrixFilter() {
+                var mat = Controller.matrixPicker("Pick a square matrix: ", new MatrixFilter() {
                     @Override
                     public boolean isValid(Matrix m) {
                         return (m.getRows() == m.getCols());
@@ -102,8 +104,37 @@ public class MiscMenu {
                 if (mat == null) return false;
                 var det = MatrixFunctions.findDeterminant(mat);
                 if (det == null) return false;
-                System.out.println("matrix determinant: ");
+                System.out.println("Matrix determinant: ");
                 System.out.println(Printer.rationalToString(det));
+                System.out.println("\n---press enter to continue---");
+                s.nextLine();
+                Printer.clearConsole();
+            }
+            case addition -> {
+                var left = Controller.matrixPicker("Pick a matrix: ");
+                if (left == null) return false;
+                var right = Controller.matrixPicker("Pick another matrix: ", new MatrixFilter() {
+                    @Override
+                    public boolean isValid(Matrix m) {
+                        return left.getCols() == m.getCols() && left.getRows() == m.getRows();
+                    }
+                });
+                if (right == null) return false;
+                System.out.print("enter an integer coefficient for second matrix: ");
+                String coefStr = s.nextLine();
+                int coef;
+                try {
+                    coef = Integer.parseInt(coefStr);
+                }
+                catch (NumberFormatException e) {
+                    return false;
+                }
+                var result = MatrixFunctions.matrixAdd(left, right, coef);
+                Printer.clearConsole();
+                matrices.add(Controller.namePicker(result, "Enter name for result matrix: "));
+                Printer.clearConsole();
+                System.out.println("Result matrix: ");
+                Printer.printMatrix(result);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
                 Printer.clearConsole();

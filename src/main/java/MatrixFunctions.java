@@ -70,13 +70,9 @@ public class MatrixFunctions {
 
 
     public static Rational<MultivariatePolynomial<BigInteger>>[][] matrixAdd(Matrix left, Matrix right, int coefficient) {
-        if (left.getCols() != right.getCols() || left.getRows() != right.getRows()) {
-            return null;
-        }
-
         var result = left.getMatrix();
         for (int i = 0; i < left.getRows(); i++) {
-            for (int j = 0; j < left.getCols(); i++) {
+            for (int j = 0; j < left.getCols(); j++) {
                 result[i][j] = result[i][j].add(right.get(i,j).multiply(Parser.parse("" + coefficient)));
             }
         }

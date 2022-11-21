@@ -74,7 +74,7 @@ public class Controller {
                 printUserGuide();
             }
             case misc -> {
-                MiscMenu.start(matrices, s);
+                FunctionsController.start(matrices, s);
             }
             case createMatrix -> {
                 try {
@@ -98,7 +98,7 @@ public class Controller {
                     Printer.printMatrix(states.get(i));
                     System.out.println();
                 }
-                System.out.println("Earlier additions are further up");
+                System.out.println("Earlier operations are further up");
                 System.out.println("---Press enter to go back---");
                 s.nextLine();
                 Printer.clearConsole();
