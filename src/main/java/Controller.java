@@ -209,10 +209,12 @@ public class Controller {
         System.out.println("    1. Entering dimensions: Formatting is mxn where m=#rows n=#cols");
         System.out.println("        Example: an input of \"3x4\" means a matrix of 3 rows and 4 columns.");
         System.out.println("    2. Entering rows: You will enter each row at once separated by commas");
-        System.out.println("        Example: \"a,b,c,1,2\" is a valid row entry to a 4x5 matrix, but \"a,b\" is not because it only has 2 entries.");
+        System.out.println("        Example: \"a,b,c,1,2\" is a valid row entry to a 4x5 matrix, but \"a,b\" is not");
         System.out.println("    3. Naming matrices: Name should start with a letter, entering nothing gives a default name");
-        System.out.println("        Default names will be in the format of \"matrix<N>\" where N will increment for each additional default-name matrix.");
-        System.out.println("iii) Errors: errors will be displayed at the top. The topmost line usually tells you formatting and choice errors");
+        System.out.println("        Default names will be in the format of \"matrix<N>\" and will be unique");
+        System.out.println("iii) Errors: errors in menu will be displayed at the top.");
+        System.out.println("iv) Matrix selection: When prompted to select matrix, you can enter listing number or name");
+        System.out.println("    - Errors: will take you to another page that then asks you to quit or retry");
         System.out.println("\n---Press enter to go back---");
         s.nextLine();
         Printer.clearConsole();
