@@ -26,11 +26,13 @@ public class Controller {
             misc = "Misc. Functions",
             guide = "User guide",
             createMatrix = "Create new matrix",
+            deleteMatrix = "Delete a matrix",
             view = "View matrix",
             exit = "Quit";
 
     private static final String[] options = new String[]{
             createMatrix,
+            deleteMatrix,
             rowOps,
             view,
             misc,
@@ -101,6 +103,13 @@ public class Controller {
                 System.out.println("Earlier operations are further up");
                 System.out.println("---Press enter to go back---");
                 s.nextLine();
+                Printer.clearConsole();
+            }
+            case deleteMatrix -> {
+                var deletion = matrixPicker("Choose matrix to delete: ");
+                if (deletion != null) {
+                    matrices.deleteMatrix(deletion.getName());
+                }
                 Printer.clearConsole();
             }
         }

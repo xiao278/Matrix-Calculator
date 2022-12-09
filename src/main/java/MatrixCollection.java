@@ -31,4 +31,8 @@ public class MatrixCollection {
     public int size() {
         return hashMap.size();
     }
+
+    public Matrix deleteMatrix(String name) {
+        return hashMap.remove(name);
+    }
 }
