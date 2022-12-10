@@ -4,6 +4,7 @@ import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 public class Matrix {
     public final int rows;
@@ -98,7 +99,7 @@ public class Matrix {
     }
 
     public static boolean isName(String str) {
-        return !Character.isDigit(str.charAt(0));
+        return !str.equals("quit") && Pattern.matches("[0-9]*[^0-9]+.*", str);
     }
 
     public Stack<Rational<MultivariatePolynomial<BigInteger>>[][]> getMatrixStates() {

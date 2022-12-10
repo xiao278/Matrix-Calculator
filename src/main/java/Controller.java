@@ -215,7 +215,7 @@ public class Controller {
                 }
             }
             else {
-                System.out.println("Error: invalid name, first character cannot be a number");
+                System.out.println("Error: invalid name, cannot be \"quit\" or a number");
             }
         }
         return new Matrix(squareArr, name);
