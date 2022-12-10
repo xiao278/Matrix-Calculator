@@ -161,8 +161,8 @@ public class Controller {
                 if (matrix != null) return matrix;
             }
             else {
-                int index = Integer.parseInt(input);
-                if (index >= 0 && index <= arr.length) return arr[index];
+                int index = Integer.parseInt(input) - 1;
+                if (index >= 0 && index < arr.length) return arr[index];
             }
         }
     }
