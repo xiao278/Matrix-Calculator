@@ -12,7 +12,7 @@ public class Controller {
     public static void main(String[] args) {
         s = new Scanner(System.in);
         Parser.initialize();
-        Printer.initialize(args[1]);
+        Printer.initialize(args[0]);
         matrices = new MatrixCollection();
         Printer.clearConsole();
 
