@@ -78,7 +78,7 @@ public class Controller {
             case rowReduce -> {
                 var matrix = matrixPicker("Pick matrix to row reduce: ");
                 if (matrix == null) return;
-                RowReducer.run(matrix);
+                MatrixFunctions.rowReduce(matrix);
                 Printer.clearConsole();
                 System.out.println("Result matrix: ");
                 Printer.printMatrix(matrix.getMatrixCopy());
