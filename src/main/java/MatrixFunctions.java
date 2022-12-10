@@ -116,7 +116,12 @@ public class MatrixFunctions {
                 }
             }
         }
-        //TODO: sort result matrix so that it becomes upper triangular matrix, using pivotRow. treat -1 as bigger than any other number
+        for (int i = 0; i < pivotRow.length - 1; i++) {
+            boolean sorted;
+            for (int j = i + 1; j < pivotRow.length; j++) {
+                //TODO;
+            }
+        }
         matrix.add(A, "Row Reduction");
     }
 }
