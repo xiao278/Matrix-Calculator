@@ -153,30 +153,14 @@ public class Controller {
             System.out.print("Type \"quit\" to go back, " + prompt);
             String input = s.nextLine();
             Printer.clearConsole();
-            var matrix = matrices.get(input);
-            if (matrix == null) {
-                try {
-                    var index = Integer.parseInt(input) - 1;
-                    matrix = filteredArr.get(index);
-                    return matrix;
-                }
-                catch (NumberFormatException e) {
-                    System.out.println("Error: invalid input");
-                    System.out.println("press enter to retry, type \"q\" to quit: ");
-                    input = s.nextLine();
-                    Printer.clearConsole();
-                    if (input.equals("q")) return null;
-                }
-                catch (IndexOutOfBoundsException e) {
-                    System.out.println("Error: invalid number");
-                    System.out.println("press enter to retry, type \"q\" to quit: ");
-                    input = s.nextLine();
-                    Printer.clearConsole();
-                    if (input.equals("q")) return null;
-                }
+            if (input.equals("quit")) return null;
+            if (Matrix.isName(input)) {
+                var matrix = matrices.get(input);
+                if (matrix != null) return matrix;
             }
             else {
-                    return matrix;
+                int index = Integer.parseInt(input);
+                if (index >= 0 && index <= arr.length) return arr[index];
             }
         }
     }
