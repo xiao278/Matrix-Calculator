@@ -150,7 +150,7 @@ public class Controller {
             for (int i = 0; i < filteredArr.size(); i++) {
                 System.out.println((i + 1) + ") " + filteredArr.get(i).preview());
             }
-            System.out.print(prompt);
+            System.out.print("Type \"quit\" to go back, " + prompt);
             String input = s.nextLine();
             Printer.clearConsole();
             var matrix = matrices.get(input);

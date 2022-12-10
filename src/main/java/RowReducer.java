@@ -36,6 +36,7 @@ public class RowReducer {
                 }
             }
         }
+        //TODO: sort result matrix so that it becomes upper triangular matrix, using pivotRow. treat -1 as bigger than any other number
         matrix.add(A, "Row Reduction");
     }
 }
