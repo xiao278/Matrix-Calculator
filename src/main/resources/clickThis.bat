@@ -1,1 +1,1 @@
-java -jar Matrix-Calculator.jar
+java -jar Matrix-Calculator.jar commandLine

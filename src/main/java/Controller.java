@@ -12,6 +12,7 @@ public class Controller {
     public static void main(String[] args) {
         s = new Scanner(System.in);
         Parser.initialize();
+        Printer.initialize(args[1]);
         matrices = new MatrixCollection();
         Printer.clearConsole();
 
@@ -93,7 +94,7 @@ public class Controller {
             }
             case createMatrix -> {
                 try {
-                    Initializer.start(matrices, s);
+                    MatrixCreator.start(matrices, s);
                     Printer.clearConsole();
                 }
                 catch (Exception e) {

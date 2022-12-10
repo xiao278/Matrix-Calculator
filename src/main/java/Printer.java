@@ -9,12 +9,17 @@ import java.util.Arrays;
  */
 public class Printer {
     //matrix column padding
-    final static int padding = 0;
-    private static final boolean IDE_MODE = true;
+    private final static int padding = 0;
+    private static boolean runningFromIntelliJ;
+
+    public static void initialize(String ide) {
+        if (ide.equals("IDE")) runningFromIntelliJ = true;
+        else runningFromIntelliJ = false;
+    }
 
     public static void clearConsole()
     {
-        if (runningFromIntelliJ()) {
+        if (runningFromIntelliJ) {
             //a bunch of new line
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         } else {
@@ -25,12 +30,6 @@ public class Printer {
                 //do nothing
             }
         }
-    }
-
-    public static boolean runningFromIntelliJ()
-    {
-        //change to false on building .jar
-        return IDE_MODE;
     }
 
     public static void printMatrix(Rational[][] matrix) {

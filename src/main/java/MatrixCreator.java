@@ -3,7 +3,7 @@ import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 import java.util.Scanner;
 
-public class Initializer {
+public class MatrixCreator {
     public static void start(MatrixCollection matrices, Scanner s) throws Exception {
         //[row][col]
         Rational<MultivariatePolynomial<BigInteger>>[][] matrix;
