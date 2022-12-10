@@ -4,17 +4,15 @@ import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 import java.util.Scanner;
 
 public class OperationsController {
-    private static Matrix matrixSystem;
     private static Scanner s;
 
     public static void start(Matrix m, Scanner scanner) {
         s = scanner;
-        matrixSystem = m;
         while (true) {
-            Printer.printMatrix(matrixSystem.getMatrix());
+            Printer.printMatrix(m.getMatrixCopy());
             System.out.println("Enter a command (type \"h\" for more info and \"q\" to go back): ");
             System.out.print(">");
-            if (processInput()) return;
+            if (processInput(m)) return;
         }
     }
 
@@ -35,7 +33,7 @@ public class OperationsController {
         Printer.clearConsole();
     }
 
-    private static boolean processInput() {
+    private static boolean processInput(Matrix m) {
         String str = s.nextLine();
         str = str.strip();
         switch (str) {
@@ -48,12 +46,12 @@ public class OperationsController {
             }
             case "u" -> {
                 Printer.clearConsole();
-                System.out.println("undone operation: " + matrixSystem.undo());
+                System.out.println("undone operation: " + m.undo());
             }
             default -> {
                 try {
                     Printer.clearConsole();
-                    parseOperation(str);
+                    parseOperation(m, str);
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
                 }
@@ -62,7 +60,7 @@ public class OperationsController {
         return false;
     }
 
-    private static void parseOperation(String input) throws Exception {
+    private static void parseOperation(Matrix m, String input) throws Exception {
         int scaleIndex = input.indexOf("*=");
         int divIndex = input.indexOf("/=");
         int addIndex = input.indexOf("+=");
@@ -111,10 +109,10 @@ public class OperationsController {
         if (RC != 'R' && RC != 'C') throw new Exception("error formatting");
         int destination = Integer.parseInt(destinationStr.substring(1)) - 1;
 
-        var matrix = matrixSystem.getMatrix();
+        var matrix = m.getMatrixCopy();
         String operation;
 
-        if (destination < 0 || destination >= matrixSystem.getRows()) throw new Exception("invalid destination " + RC);
+        if (destination < 0 || destination >= m.rows) throw new Exception("invalid destination " + RC);
         String operandStr = split[1].strip();
 
         if (op.equals("*") || op.equals("/")) {
@@ -122,12 +120,12 @@ public class OperationsController {
             Rational<MultivariatePolynomial<BigInteger>> scale = Parser.parse(operandStr);
             if (op.equals("/")) scale = scale.pow(-1);
             if (RC == 'R') {
-                for (int i = 0; i < matrixSystem.getCols(); i++) {
+                for (int i = 0; i < m.cols; i++) {
                     matrix[destination][i] = matrix[destination][i].multiply(scale);
                 }
             }
             else {
-                for (int i = 0; i < matrixSystem.getRows(); i++) {
+                for (int i = 0; i < m.rows; i++) {
                     matrix[i][destination] = matrix[i][destination].multiply(scale);
                 }
             }
@@ -152,12 +150,12 @@ public class OperationsController {
                 scale = scale.multiply(Parser.parse("-1"));
             }
             if (RC == 'R') {
-                for (int i = 0; i < matrixSystem.getCols(); i++) {
+                for (int i = 0; i < m.cols; i++) {
                     matrix[destination][i] = matrix[destination][i].add(matrix[target][i].multiply(scale));
                 }
             }
             else {
-                for (int i = 0; i < matrixSystem.getRows(); i++) {
+                for (int i = 0; i < m.rows; i++) {
                     matrix[i][destination] = matrix[i][destination].add(matrix[i][target].multiply(scale));
                 }
             }
@@ -176,7 +174,7 @@ public class OperationsController {
                 matrix[target] = temp;
             }
             else {
-                for (int i = 0; i < matrixSystem.getRows(); i++) {
+                for (int i = 0; i < m.rows; i++) {
                     var temp = matrix[i][destination];
                     matrix[i][destination] = matrix[i][target];
                     matrix[i][target] = temp;
@@ -187,6 +185,6 @@ public class OperationsController {
 
         else throw new Exception("invalid operation");
 
-        matrixSystem.add(matrix, operation);
+        m.add(matrix, operation);
     }
 }

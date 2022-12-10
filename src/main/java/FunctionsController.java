@@ -59,11 +59,11 @@ public class FunctionsController {
             case product -> {
                 Matrix A = Controller.matrixPicker("Pick left matrix: ");
                 if (A == null) return false;
-                int inner = A.getCols();
+                int inner = A.cols;
                 Matrix B = Controller.matrixPicker("Pick right matrix: ", new MatrixFilter() {
                     @Override
                     public boolean isValid(Matrix m) {
-                        return m.getRows() == inner;
+                        return m.rows == inner;
                     }
                 });
                 if (B == null) return false;
@@ -98,7 +98,7 @@ public class FunctionsController {
                 var mat = Controller.matrixPicker("Pick a square matrix: ", new MatrixFilter() {
                     @Override
                     public boolean isValid(Matrix m) {
-                        return (m.getRows() == m.getCols());
+                        return (m.rows == m.cols);
                     }
                 });
                 if (mat == null) return false;
@@ -116,7 +116,7 @@ public class FunctionsController {
                 var right = Controller.matrixPicker("Pick another matrix: ", new MatrixFilter() {
                     @Override
                     public boolean isValid(Matrix m) {
-                        return left.getCols() == m.getCols() && left.getRows() == m.getRows();
+                        return left.cols == m.cols && left.rows == m.rows;
                     }
                 });
                 if (right == null) return false;

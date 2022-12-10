@@ -6,8 +6,8 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class Matrix {
-    private int rows;
-    private int cols;
+    public final int rows;
+    public final int cols;
     private Stack<Rational<MultivariatePolynomial<BigInteger>>[][]> matrixStates;
     private Stack<String> operations;
     private String name;
@@ -39,7 +39,7 @@ public class Matrix {
      *
      * @return makes a copy of the most recent matrix
      */
-    public Rational<MultivariatePolynomial<BigInteger>>[][] getMatrix() {
+    public Rational<MultivariatePolynomial<BigInteger>>[][] getMatrixCopy() {
         return copyMatrix(matrixStates.peek());
     }
 
@@ -87,14 +87,6 @@ public class Matrix {
 
     public static String nextDefaultName() {
         return "matrix" + matrixCounter;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public int getCols() {
-        return cols;
     }
 
     public String preview() {

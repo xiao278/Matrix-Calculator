@@ -27,6 +27,7 @@ public class Controller {
             guide = "User guide",
             createMatrix = "Create new matrix",
             deleteMatrix = "Delete a matrix",
+            rowReduce = "Perform Gaussian Elimination",
             view = "View matrix",
             exit = "Quit";
 
@@ -34,6 +35,7 @@ public class Controller {
             createMatrix,
             deleteMatrix,
             rowOps,
+            rowReduce,
             view,
             misc,
             guide,
@@ -71,6 +73,17 @@ public class Controller {
                 var matrix = matrixPicker();
                 if (matrix == null) return;
                 OperationsController.start(matrix, s);
+            }
+            case rowReduce -> {
+                var matrix = matrixPicker("Pick matrix to row reduce: ");
+                if (matrix == null) return;
+                RowReducer.run(matrix);
+                Printer.clearConsole();
+                System.out.println("Result matrix: ");
+                Printer.printMatrix(matrix.getMatrixCopy());
+                System.out.println("\n---press enter to continue---");
+                s.nextLine();
+                Printer.clearConsole();
             }
             case guide -> {
                 printUserGuide();

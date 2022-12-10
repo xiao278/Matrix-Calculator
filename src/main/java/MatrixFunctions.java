@@ -5,9 +5,9 @@ import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 public class MatrixFunctions {
 
     public static Rational<MultivariatePolynomial<BigInteger>>[][] product(Matrix left, Matrix right) {
-        if (left.getCols() != right.getRows()) return null;
-        int inner = left.getCols();
-        Rational<MultivariatePolynomial<BigInteger>>[][] product = new Rational[left.getRows()][right.getCols()];
+        if (left.cols != right.rows) return null;
+        int inner = left.cols;
+        Rational<MultivariatePolynomial<BigInteger>>[][] product = new Rational[left.rows][right.cols];
         for (int i = 0; i < product.length; i++) {
             for (int j = 0; j < product[i].length; j++) {
                 Rational sum = Parser.parse("0");
@@ -22,9 +22,9 @@ public class MatrixFunctions {
     }
 
     public static Rational<MultivariatePolynomial<BigInteger>>[][] transpose (Matrix m) {
-        Rational<MultivariatePolynomial<BigInteger>>[][] mt = new Rational[m.getCols()][m.getRows()];
-        for (int i = 0; i < m.getCols(); i++) {
-            for (int j = 0; j < m.getRows(); j++) {
+        Rational<MultivariatePolynomial<BigInteger>>[][] mt = new Rational[m.cols][m.rows];
+        for (int i = 0; i < m.cols; i++) {
+            for (int j = 0; j < m.rows; j++) {
                 mt[i][j] = m.get(j, i);
             }
         }
@@ -37,8 +37,8 @@ public class MatrixFunctions {
      * @return null if matrix is not square, else returns the determinant
      */
     public static Rational<MultivariatePolynomial<BigInteger>> findDeterminant (Matrix m) {
-        if (m.getRows() != m.getCols()) return null;
-        return findDeterminantRecursive(m.getMatrix());
+        if (m.rows != m.cols) return null;
+        return findDeterminantRecursive(m.getMatrixCopy());
     }
     public static Rational<MultivariatePolynomial<BigInteger>> findDeterminantRecursive (Rational<MultivariatePolynomial<BigInteger>>[][] m) {
         if (m.length == 2) {
@@ -70,9 +70,9 @@ public class MatrixFunctions {
 
 
     public static Rational<MultivariatePolynomial<BigInteger>>[][] matrixAdd(Matrix left, Matrix right, int coefficient) {
-        var result = left.getMatrix();
-        for (int i = 0; i < left.getRows(); i++) {
-            for (int j = 0; j < left.getCols(); j++) {
+        var result = left.getMatrixCopy();
+        for (int i = 0; i < left.rows; i++) {
+            for (int j = 0; j < left.cols; j++) {
                 result[i][j] = result[i][j].add(right.get(i,j).multiply(Parser.parse("" + coefficient)));
             }
         }
