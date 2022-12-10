@@ -129,7 +129,8 @@ public class Controller {
     }
 
     /**
-     *
+     * @param prompt a string prompt
+     * @param f an implementation of MatrixFilter and its isValid() function
      * @return a valid matrix or null. Returning null should go back to main menu
      */
 
