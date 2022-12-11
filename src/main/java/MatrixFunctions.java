@@ -89,7 +89,7 @@ public class MatrixFunctions {
     public static void rowReduce(Matrix matrix) {
         var zero = Parser.parse("0");
         var A = matrix.getMatrixCopy();
-        //pivotRow[i] is the row index of column i, -1 means not found, used for sorting
+        //pivotRow[i] is the row index of column i, -1 means not found or rows of zero, used for sorting
         int[] pivotRow = new int[matrix.cols];
         Arrays.fill(pivotRow, -1);
         //pivotCol[i] is the col index of row i, used to check if row already has a pivot
@@ -116,12 +116,19 @@ public class MatrixFunctions {
                 }
             }
         }
-        for (int i = 0; i < pivotRow.length - 1; i++) {
-            boolean sorted;
-            for (int j = i + 1; j < pivotRow.length; j++) {
-                //TODO;
+
+        int nextAvailableRow = 0;
+        int lastAvailableRow = matrix.rows - 1;
+        var B = new Rational[matrix.rows][matrix.cols];
+        for (int j : pivotRow) {
+            if (j >= 0) {
+                B[nextAvailableRow++] = A[j];
+            }
+            else {
+                Arrays.fill(B[lastAvailableRow--], zero);
             }
         }
-        matrix.add(A, "Row Reduction");
+
+        matrix.add(B, "Row Reduction");
     }
 }
