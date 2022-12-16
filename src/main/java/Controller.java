@@ -160,7 +160,7 @@ public class Controller {
                 var matrix = matrices.get(input);
                 if (matrix != null) return matrix;
             }
-            else {
+            else if (!input.equals("")) {
                 int index = Integer.parseInt(input) - 1;
                 if (index >= 0 && index < arr.length) return arr[index];
             }

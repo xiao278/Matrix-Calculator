@@ -62,9 +62,9 @@ public class Printer {
         }
     }
 
-    public static String rationalToString(Rational<MultivariatePolynomial<BigInteger>> in) {
+    public static String rationalToString(Rational<MultivariatePolynomial<BigInteger>> mat) {
         StringBuilder output = new StringBuilder();
-        String temp = in.toString();
+        String temp = mat.toString();
         for (int i = 0; i < temp.length(); i++) {
             char current = temp.charAt(i);
             if (current == 'x') {

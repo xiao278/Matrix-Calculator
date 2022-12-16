@@ -120,17 +120,18 @@ public class MatrixFunctions {
         }
 
         int nextAvailableRow = 0;
-        int lastAvailableRow = matrix.rows - 1;
         var B = new Rational[matrix.rows][matrix.cols];
         int rank = 0;
+        //flawed, sets row of zero when clearly no need
         for (int j : pivotRow) {
             if (j >= 0) {
                 rank++;
-                B[nextAvailableRow++] = A[j];
+                B[nextAvailableRow++] = Arrays.copyOf(A[j], A[j].length);
             }
-            else {
-                Arrays.fill(B[lastAvailableRow--], zero);
-            }
+        }
+
+        for (int i = A.length - 1; i >= nextAvailableRow; i--) {
+            Arrays.fill(B[i], zero);
         }
 
         matrix.insert(B, "Row Reduction");
