@@ -187,18 +187,19 @@ public class MatrixFunctions {
             }
         }
 
-        Rational[][] solution = new Rational[nullity + 1][A.cols];
+        //solution to A so (nullity + 1) - 1
+        Rational[][] solution = new Rational[nullity][A.cols];
 
         for (int i = 0; i < solution.length; i++) {
             Arrays.fill(solution[i], zero);
         }
 
-        for (int i = 0; i < A.rows; i++) {
-            solution[0][i] = Ab.get(i, Ab.cols - 1).negate();
+        for (int i = 0; i < Math.min(A.rows, pivotCols.length); i++) {
+            solution[0][i] = Ab.get(i, Ab.cols - 1);
         }
 
         var one = Parser.parse("1");
-        for (int i = 0; i < nonPivotCols.length; i++) {
+        for (int i = 0; i < nonPivotCols.length - 1; i++) {
             for (int j = 0; j < Ab.rows; j++) {
                 solution[i + 1][j] = Ab.get(j, nonPivotCols[i]).negate();
             }

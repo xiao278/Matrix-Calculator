@@ -11,6 +11,7 @@ public class FunctionsController {
         while (true) {
             printModes();
             if (processModes()) return;
+            Printer.clearConsole();
         }
     }
 
@@ -92,7 +93,6 @@ public class FunctionsController {
                 Printer.printMatrix(mt);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
-                Printer.clearConsole();
             }
             case quit -> {
                 return true;
@@ -111,7 +111,6 @@ public class FunctionsController {
                 System.out.println(Printer.rationalToString(det));
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
-                Printer.clearConsole();
             }
             case addition -> {
                 var left = Controller.matrixPicker("Pick a matrix: ");
@@ -140,12 +139,12 @@ public class FunctionsController {
                 Printer.printMatrix(result);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
-                Printer.clearConsole();
             }
             case solve -> {
                 var matrix = Controller.matrixPicker();
                 if (matrix == null) return false;
                 try {
+                    Printer.printMatrix(matrix.getMatrixCopy());
                     System.out.println("Separate entries with comas,");
                     System.out.print("Enter a " + matrix.rows + "x1 transposed column vector: ");
                     var split = s.nextLine().split(",");
@@ -156,6 +155,7 @@ public class FunctionsController {
                     }
                     MatrixFunctions.solve(matrix, b);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     return false;
                 }
             }
