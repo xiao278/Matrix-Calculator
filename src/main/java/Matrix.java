@@ -2,7 +2,6 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
-import java.util.Scanner;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
@@ -13,11 +12,21 @@ public class Matrix {
     private Stack<String> operations;
     private String name;
     private static int matrixCounter = 1;
+
+    /**
+     * creates a matrix with a default name
+     * @param squareArr any double-nested array
+     */
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr) {
         this(squareArr, nextDefaultName());
         matrixCounter++;
     }
 
+    /**
+     * creates a matrix with custom name
+     * @param squareArr any double-nested array
+     * @param name name for matrix
+     */
     public Matrix (Rational<MultivariatePolynomial<BigInteger>>[][] squareArr, String name) {
         matrixStates = new Stack<>();
         operations = new Stack<>();
@@ -54,11 +63,11 @@ public class Matrix {
         return copy;
     }
 
-    public void add(Rational<MultivariatePolynomial<BigInteger>>[][] mat) {
-        add(mat, "Unknown");
+    public void insert(Rational<MultivariatePolynomial<BigInteger>>[][] mat) {
+        insert(mat, "Unknown");
     }
 
-    public void add(Rational<MultivariatePolynomial<BigInteger>>[][] mat, String op) {
+    public void insert(Rational<MultivariatePolynomial<BigInteger>>[][] mat, String op) {
         matrixStates.push(mat);
         operations.push(op);
     }

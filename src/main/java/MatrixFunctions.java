@@ -42,6 +42,7 @@ public class MatrixFunctions {
         if (m.rows != m.cols) return null;
         return findDeterminantRecursive(m.getMatrixCopy());
     }
+
     public static Rational<MultivariatePolynomial<BigInteger>> findDeterminantRecursive (Rational<MultivariatePolynomial<BigInteger>>[][] m) {
         if (m.length == 2) {
             return m[0][0].multiply(m[1][1]).subtract(m[0][1].multiply(m[1][0]));
@@ -83,10 +84,11 @@ public class MatrixFunctions {
     }
 
     /**
-     * Performs row reduction on a given matrix
+     * Performs row reduction on a given matrix in n^3 time
      * @param matrix matrix to be row reduced. Will add changed matrix into the matrix stack
+     * @return the rank of the matrix
      */
-    public static void rowReduce(Matrix matrix) {
+    public static int rowReduce(Matrix matrix) {
         var zero = Parser.parse("0");
         var A = matrix.getMatrixCopy();
         //pivotRow[i] is the row index of column i, -1 means not found or rows of zero, used for sorting
@@ -120,8 +122,10 @@ public class MatrixFunctions {
         int nextAvailableRow = 0;
         int lastAvailableRow = matrix.rows - 1;
         var B = new Rational[matrix.rows][matrix.cols];
+        int rank = 0;
         for (int j : pivotRow) {
             if (j >= 0) {
+                rank++;
                 B[nextAvailableRow++] = A[j];
             }
             else {
@@ -129,6 +133,35 @@ public class MatrixFunctions {
             }
         }
 
-        matrix.add(B, "Row Reduction");
+        matrix.insert(B, "Row Reduction");
+        return rank;
+    }
+
+    /**
+     * for A mxn, b mx1 matrices, finds all x for which Ax=b
+     * @param A an mxn matrix
+     * @param b an mx1 matrix
+     * @return an array of nx1 matrices
+     */
+    public static Rational<MultivariatePolynomial<BigInteger>>[][][] solve(Matrix A, Matrix b) {
+        //an augmented matrix;
+        Rational[][] Ab = new Rational[A.rows][A.cols + b.cols];
+
+        //copy all of A into the left part
+        for (int r = 0; r < A.rows; r++) {
+            for (int c = 0; c < A.cols; c++) {
+                Ab[r][c] = A.get(r,c);
+            }
+        }
+
+        //copy b into rightmost column
+        for (int r = 0; r < b.rows; r++) {
+            Ab[r][A.cols] = b.get(r,0);
+        }
+
+        Matrix temp = new Matrix(Ab, "");
+        rowReduce(temp);
+
+        return null;
     }
 }

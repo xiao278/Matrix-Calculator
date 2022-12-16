@@ -185,6 +185,6 @@ public class OperationsController {
 
         else throw new Exception("invalid operation");
 
-        m.add(matrix, operation);
+        m.insert(matrix, operation);
     }
 }
