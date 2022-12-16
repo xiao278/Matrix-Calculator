@@ -84,7 +84,7 @@ public class Printer {
 
             }
             else if (current == '+' || current == '-') {
-                output.append(" " + current + " ");
+                output.append(" ").append(current).append(" ");
             }
             else {
                 output.append(current);
