@@ -5,6 +5,7 @@ import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 import java.util.Arrays;
 
 public class MatrixFunctions {
+    private static final Rational<MultivariatePolynomial<BigInteger>> zero = Parser.parse("0");
 
     public static Rational<MultivariatePolynomial<BigInteger>>[][] product(Matrix left, Matrix right) {
         if (left.cols != right.rows) return null;
@@ -89,7 +90,6 @@ public class MatrixFunctions {
      * @return pivot column array, pivotCol[r] gives the col number for row r.
      */
     public static int[] rowReduce(Matrix matrix) {
-        var zero = Parser.parse("0");
         var A = matrix.getMatrixCopy();
         //pivotRow[i] is the row index of column i, -1 means not found or rows of zero, used for sorting
         int[] pivotRow = new int[matrix.cols];
@@ -139,21 +139,20 @@ public class MatrixFunctions {
             Arrays.fill(B[i], zero);
         }
 
-        System.out.println(Arrays.toString(bPivotCol));
-
         matrix.insert(B, "Row Reduction");
-        return null;
+        return bPivotCol;
     }
 
     /**
      * for A mxn, b mx1 matrices, finds all x for which Ax=b
      * @param A an mxn matrix
-     * @param b an mx1 matrix
-     * @return an array of nx1 matrices
+     * @param b an m length array of Rational, represents mx1 transposed column vector
+     * @return null if solution is inconsistent, otherwise returns an array of vectors. [0] is the offset, the rest is the span. if size is 1 then solution is unique
      */
-    public static Rational<MultivariatePolynomial<BigInteger>>[][][] solve(Matrix A, Matrix b) {
+    public static Rational<MultivariatePolynomial<BigInteger>>[][] solve(Matrix A, Rational<MultivariatePolynomial<BigInteger>>[] b) {
+        var zero = Parser.parse("0");
         //an augmented matrix;
-        Rational[][] temp = new Rational[A.rows][A.cols + b.cols];
+        Rational[][] temp = new Rational[A.rows][A.cols + 1];
 
         //copy all of A into the left part
         for (int r = 0; r < A.rows; r++) {
@@ -163,14 +162,50 @@ public class MatrixFunctions {
         }
 
         //copy b into rightmost column
-        for (int r = 0; r < b.rows; r++) {
-            temp[r][A.cols] = b.get(r,0);
+        for (int r = 0; r < b.length; r++) {
+            temp[r][A.cols] = b[r];
         }
 
         Matrix Ab = new Matrix(temp, "");
-        var pivotCols = rowReduce(Ab);
+        int[] pivotCols = rowReduce(Ab);
+        Rational[][] x = new Rational[A.cols][1];
+        int nullity = Ab.cols - pivotCols.length;
 
+        //row of zeroes with the augmented part nonzero. i.e. 0x=3 is never true
+        if (pivotCols[pivotCols.length - 1] == Ab.cols - 1) return null;
 
+        boolean[] isPivotCol = new boolean[Ab.cols];
+        Arrays.fill(isPivotCol, false);
+        for (int col: pivotCols) {
+            isPivotCol[col] = true;
+        }
+        int[] nonPivotCols = new int[nullity];
+        int nonPivotColTracker = 0;
+        for (int i = 0; i < isPivotCol.length; i++) {
+            if (!isPivotCol[i]) {
+                nonPivotCols[nonPivotColTracker++] = i;
+            }
+        }
+
+        Rational[][] solution = new Rational[nullity + 1][A.cols];
+
+        for (int i = 0; i < solution.length; i++) {
+            Arrays.fill(solution[i], zero);
+        }
+
+        for (int i = 0; i < A.rows; i++) {
+            solution[0][i] = Ab.get(i, Ab.cols - 1).negate();
+        }
+
+        var one = Parser.parse("1");
+        for (int i = 0; i < nonPivotCols.length; i++) {
+            for (int j = 0; j < Ab.rows; j++) {
+                solution[i + 1][j] = Ab.get(j, nonPivotCols[i]).negate();
+            }
+            solution[i + 1][nonPivotCols[i]] = one;
+        }
+
+        Printer.printMatrix(solution);
 
         return null;
     }

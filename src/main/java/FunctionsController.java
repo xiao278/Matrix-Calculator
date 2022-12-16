@@ -1,3 +1,4 @@
+import cc.redberry.rings.Rational;
 import java.util.Scanner;
 
 public class FunctionsController {
@@ -18,13 +19,15 @@ public class FunctionsController {
         transpose = "Matrix Transpose",
         quit = "Go back",
         addition = "Matrix Addition",
-        determinant = "Matrix Determinant";
+        determinant = "Matrix Determinant",
+        solve = "Solve";
 
     private static final String[] options = new String[]{
             addition,
             product,
             transpose,
             determinant,
+            solve,
             quit
     };
 
@@ -138,6 +141,23 @@ public class FunctionsController {
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
                 Printer.clearConsole();
+            }
+            case solve -> {
+                var matrix = Controller.matrixPicker();
+                if (matrix == null) return false;
+                try {
+                    System.out.println("Separate entries with comas,");
+                    System.out.print("Enter a " + matrix.rows + "x1 transposed column vector: ");
+                    var split = s.nextLine().split(",");
+                    if (split.length != matrix.rows) return false;
+                    Rational[] b = new Rational[matrix.rows];
+                    for (int i = 0; i < b.length; i++) {
+                        b[i] = Parser.parse(split[i]);
+                    }
+                    MatrixFunctions.solve(matrix, b);
+                } catch (Exception e) {
+                    return false;
+                }
             }
         }
         return false;
