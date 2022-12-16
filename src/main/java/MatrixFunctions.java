@@ -86,9 +86,9 @@ public class MatrixFunctions {
     /**
      * Performs row reduction on a given matrix in n^3 time
      * @param matrix matrix to be row reduced. Will add changed matrix into the matrix stack
-     * @return the rank of the matrix
+     * @return pivot column array, pivotCol[r] gives the col number for row r.
      */
-    public static int rowReduce(Matrix matrix) {
+    public static int[] rowReduce(Matrix matrix) {
         var zero = Parser.parse("0");
         var A = matrix.getMatrixCopy();
         //pivotRow[i] is the row index of column i, -1 means not found or rows of zero, used for sorting
@@ -122,20 +122,27 @@ public class MatrixFunctions {
         int nextAvailableRow = 0;
         var B = new Rational[matrix.rows][matrix.cols];
         int rank = 0;
+        int[] bPivotCol = new int[pivotCol.length];
         //flawed, sets row of zero when clearly no need
         for (int j : pivotRow) {
             if (j >= 0) {
                 rank++;
-                B[nextAvailableRow++] = Arrays.copyOf(A[j], A[j].length);
+                B[nextAvailableRow] = Arrays.copyOf(A[j], A[j].length);
+                bPivotCol[nextAvailableRow] = pivotCol[j];
+                nextAvailableRow++;
             }
         }
+
+        bPivotCol = Arrays.copyOf(bPivotCol, rank);
 
         for (int i = A.length - 1; i >= nextAvailableRow; i--) {
             Arrays.fill(B[i], zero);
         }
 
+        System.out.println(Arrays.toString(bPivotCol));
+
         matrix.insert(B, "Row Reduction");
-        return rank;
+        return null;
     }
 
     /**
@@ -146,22 +153,24 @@ public class MatrixFunctions {
      */
     public static Rational<MultivariatePolynomial<BigInteger>>[][][] solve(Matrix A, Matrix b) {
         //an augmented matrix;
-        Rational[][] Ab = new Rational[A.rows][A.cols + b.cols];
+        Rational[][] temp = new Rational[A.rows][A.cols + b.cols];
 
         //copy all of A into the left part
         for (int r = 0; r < A.rows; r++) {
             for (int c = 0; c < A.cols; c++) {
-                Ab[r][c] = A.get(r,c);
+                temp[r][c] = A.get(r,c);
             }
         }
 
         //copy b into rightmost column
         for (int r = 0; r < b.rows; r++) {
-            Ab[r][A.cols] = b.get(r,0);
+            temp[r][A.cols] = b.get(r,0);
         }
 
-        Matrix temp = new Matrix(Ab, "");
-        rowReduce(temp);
+        Matrix Ab = new Matrix(temp, "");
+        var pivotCols = rowReduce(Ab);
+
+
 
         return null;
     }
