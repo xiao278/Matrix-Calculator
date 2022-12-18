@@ -194,14 +194,14 @@ public class MatrixFunctions {
             Arrays.fill(solution[i], zero);
         }
 
-        for (int i = 0; i < Math.min(A.rows, pivotCols.length); i++) {
-            solution[0][i] = Ab.get(i, Ab.cols - 1);
+        for (int i = 0; i < pivotCols.length; i++) {
+            solution[0][pivotCols[i]] = Ab.get(i, Ab.cols - 1);
         }
 
         var one = Parser.parse("1");
         for (int i = 0; i < nonPivotCols.length - 1; i++) {
             for (int j = 0; j < Ab.rows; j++) {
-                solution[i + 1][j] = Ab.get(j, nonPivotCols[i]).negate();
+                solution[i + 1][pivotCols[j]] = Ab.get(j, nonPivotCols[i]).negate();
             }
             solution[i + 1][nonPivotCols[i]] = one;
         }
@@ -211,3 +211,5 @@ public class MatrixFunctions {
         return null;
     }
 }
+
+
