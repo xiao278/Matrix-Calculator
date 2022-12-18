@@ -210,6 +210,15 @@ public class MatrixFunctions {
 
         return new MatrixSolution(offset, span, nonPivotCols);
     }
+
+    /**
+     *
+     * @param A matrix with no variables
+     * @return
+     */
+    public static Rational[] findEigenvalues(Matrix A) {
+        return null;
+    }
 }
 
 class MatrixSolution {
@@ -228,14 +237,14 @@ class MatrixSolution {
         var str = new StringBuilder();
         str.append("[");
         for (int i = 0; i < offset.length; i++) {
-            str.append(Printer.rationalToString(offset[i]));
+            str.append(Matrix.rationalToString(offset[i]));
             if (i < offset.length - 1) str.append(",");
         }
         str.append("]T");
         for (int xi = 0; xi < span.length; xi++) {
             str.append(" +\nx").append(x[xi] + 1).append("[");
             for (int i = 0; i < span[xi].length; i++) {
-                str.append(Printer.rationalToString(span[xi][i]));
+                str.append(Matrix.rationalToString(span[xi][i]));
                 if (i < span[xi].length - 1) str.append(",");
             }
             str.append("]T");

@@ -73,10 +73,11 @@ public class FunctionsController {
                 if (B == null) return false;
                 var product = MatrixFunctions.product(A, B);
                 if (product != null) {
-                    matrices.add(Controller.namePicker(product, "Enter name for new product matrix: "));
+                    var mat = Controller.namePicker(product, "Enter name for new product matrix: ");
+                    matrices.add(mat);
                     Printer.clearConsole();
                     System.out.println("Product:");
-                    Printer.printMatrix(product);
+                    System.out.println(mat.toString());
                     System.out.println("\n---press enter to continue---");
                     s.nextLine();
                     Printer.clearConsole();
@@ -87,10 +88,11 @@ public class FunctionsController {
                 Matrix m = Controller.matrixPicker("Pick matrix to be transposed: ");
                 if (m == null) return false;
                 var mt = MatrixFunctions.transpose(m);
-                matrices.add(Controller.namePicker(mt, "Enter transposed matrix name: "));
+                var mat = Controller.namePicker(mt, "Enter transposed matrix name: ");
+                matrices.add(mat);
                 Printer.clearConsole();
                 System.out.println("Transposed matrix: ");
-                Printer.printMatrix(mt);
+                System.out.println(mat);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
             }
@@ -108,7 +110,7 @@ public class FunctionsController {
                 var det = MatrixFunctions.findDeterminant(mat);
                 if (det == null) return false;
                 System.out.println("Matrix determinant: ");
-                System.out.println(Printer.rationalToString(det));
+                System.out.println(Matrix.rationalToString(det));
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
             }
@@ -133,10 +135,11 @@ public class FunctionsController {
                 }
                 var result = MatrixFunctions.matrixAdd(left, right, coef);
                 Printer.clearConsole();
-                matrices.add(Controller.namePicker(result, "Enter name for result matrix: "));
+                var mat = Controller.namePicker(result, "Enter name for result matrix: ");
+                matrices.add(mat);
                 Printer.clearConsole();
                 System.out.println("Result matrix: ");
-                Printer.printMatrix(result);
+                System.out.println(mat);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
             }
@@ -145,7 +148,7 @@ public class FunctionsController {
                 if (matrix == null) return false;
                 MatrixSolution solution;
                 try {
-                    Printer.printMatrix(matrix.getMatrixCopy());
+                    System.out.println(matrix);
                     System.out.println("Separate entries with comas,");
                     System.out.print("Enter a " + matrix.rows + "x1 transposed column vector: ");
                     var split = s.nextLine().split(",");

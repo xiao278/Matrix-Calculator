@@ -9,7 +9,7 @@ public class OperationsController {
     public static void start(Matrix m, Scanner scanner) {
         s = scanner;
         while (true) {
-            Printer.printMatrix(m.getMatrixCopy());
+            System.out.println(m);
             System.out.println("Enter a command (type \"h\" for more info and \"q\" to go back): ");
             System.out.print(">");
             if (processInput(m)) return;
@@ -129,7 +129,7 @@ public class OperationsController {
                     matrix[i][destination] = matrix[i][destination].multiply(scale);
                 }
             }
-            operation = RC + "" + (destination + 1) + " -> " + "(" + Printer.rationalToString(scale) + ")" + RC + (destination + 1);
+            operation = RC + "" + (destination + 1) + " -> " + "(" + Matrix.rationalToString(scale) + ")" + RC + (destination + 1);
         }
 
         else if (op.equals("+") || op.equals("-")) {
@@ -145,7 +145,7 @@ public class OperationsController {
             }
             target = Integer.parseInt(split[1]) - 1;
             if (target < 0 || target >= matrix.length) throw new Exception("invalid target " + RC);
-            String scaleString = Printer.rationalToString(scale);
+            String scaleString = Matrix.rationalToString(scale);
             if (op.equals("-")) {
                 scale = scale.multiply(Parser.parse("-1"));
             }

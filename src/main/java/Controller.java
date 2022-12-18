@@ -81,7 +81,7 @@ public class Controller {
                 MatrixFunctions.rowReduce(matrix);
                 Printer.clearConsole();
                 System.out.println("Result matrix: ");
-                Printer.printMatrix(matrix.getMatrixCopy());
+                System.out.println(matrix);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
                 Printer.clearConsole();
@@ -107,11 +107,10 @@ public class Controller {
                 var mat = matrixPicker();
                 if (mat == null) return;
                 Printer.clearConsole();
-                var states = mat.getMatrixStates();
                 var operations =  mat.getOperations().toArray();
                 for (int i = 0; i < operations.length; i++) {
                     System.out.println(operations[i] + ": ");
-                    Printer.printMatrix(states.get(i));
+                    System.out.println(mat.toString(i));
                     System.out.println();
                 }
                 System.out.println("Earlier operations are further up");

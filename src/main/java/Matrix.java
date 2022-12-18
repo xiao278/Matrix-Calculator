@@ -2,6 +2,7 @@ import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
+import java.util.Arrays;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
@@ -12,6 +13,7 @@ public class Matrix {
     private Stack<String> operations;
     private String name;
     private static int matrixCounter = 1;
+    private final int matrixPadding = 0;
 
     /**
      * creates a matrix with a default name
@@ -37,6 +39,37 @@ public class Matrix {
         this.name = name;
     }
 
+    public static String rationalToString(Rational<MultivariatePolynomial<BigInteger>> mat) {
+        StringBuilder output = new StringBuilder();
+        String temp = mat.toString();
+        for (int i = 0; i < temp.length(); i++) {
+            char current = temp.charAt(i);
+            if (current == 'x') {
+                String numString = "" + temp.charAt(i + 1);
+                i++;
+                if (i < temp.length() - 1) {
+                    char numCheck = temp.charAt(i + 1);
+                    if (Character.isDigit(numCheck)) {
+                        numString += numCheck;
+                        i++;
+                    }
+                }
+                int number = Integer.parseInt(numString);
+                output.append((char)('a' + number - 1));
+            }
+            else if (current == '*') {
+
+            }
+            else if (current == '+' || current == '-') {
+                output.append(" ").append(current).append(" ");
+            }
+            else {
+                output.append(current);
+            }
+        }
+        return output.toString().strip();
+    }
+
     /**
      *
      * @return an entry from the most recent matrix state
@@ -53,11 +86,15 @@ public class Matrix {
         return copyMatrix(matrixStates.peek());
     }
 
+    public Rational<MultivariatePolynomial<BigInteger>>[][] getMatrix() {
+        return matrixStates.peek();
+    }
+
     private Rational<MultivariatePolynomial<BigInteger>>[][] copyMatrix(Rational<MultivariatePolynomial<BigInteger>>[][] mat) {
         Rational<MultivariatePolynomial<BigInteger>>[][] copy = new Rational[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                copy[i][j] = Parser.parse(Printer.rationalToString(mat[i][j]));
+                copy[i][j] = Parser.parse(rationalToString(mat[i][j]));
             }
         }
         return copy;
@@ -117,5 +154,47 @@ public class Matrix {
 
     public Stack<String> getOperations() {
         return operations;
+    }
+
+//    public boolean hasVariables() {
+//        return Pattern.compile("[a-z]+").matcher().find();
+//        return null;
+//    }
+
+    public String toString(int index) {
+        var matrix = matrixStates.get(index);
+        String[][] toStringMatrix = new String[matrix.length][matrix[0].length];
+
+        //max length for each column
+        int[] columnLength = new int[matrix[0].length];
+        Arrays.fill(columnLength, 0);
+
+        //insert into toStringMatrix
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                toStringMatrix[i][j] = rationalToString(matrix[i][j]);
+                columnLength[j] = Math.max(columnLength[j], toStringMatrix[i][j].length() + matrixPadding);
+            }
+        }
+
+        //formatted print
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < matrix.length; i++) {
+            out.append("[ ");
+            //paddiing
+            out.append(" ".repeat(matrixPadding));
+            for (int j = 0; j < matrix[i].length; j++) {
+                out.append(toStringMatrix[i][j]);
+                int spaceNeeded = columnLength[j] - toStringMatrix[i][j].length();
+                out.append(" ".repeat(Math.max(0, spaceNeeded)));
+                if (j < matrix[i].length - 1) out.append(" | ");
+            }
+            out.append(" ]\n");
+        }
+        return out.toString();
+    }
+
+    public String toString() {
+        return toString(matrixStates.size() - 1);
     }
 }
