@@ -156,10 +156,9 @@ public class Matrix {
         return operations;
     }
 
-//    public boolean hasVariables() {
-//        return Pattern.compile("[a-z]+").matcher().find();
-//        return null;
-//    }
+    public boolean hasVariables() {
+        return Pattern.compile("[a-z]+").matcher(toString()).find();
+    }
 
     public String toString(int index) {
         var matrix = matrixStates.get(index);

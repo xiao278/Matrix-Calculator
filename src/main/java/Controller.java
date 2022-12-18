@@ -94,7 +94,7 @@ public class Controller {
             }
             case createMatrix -> {
                 try {
-                    MatrixCreator.start(matrices, s);
+                    matrices.add(s);
                     Printer.clearConsole();
                 }
                 catch (Exception e) {
