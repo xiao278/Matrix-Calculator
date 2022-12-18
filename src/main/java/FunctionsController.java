@@ -143,7 +143,7 @@ public class FunctionsController {
             case solve -> {
                 var matrix = Controller.matrixPicker();
                 if (matrix == null) return false;
-                Rational[][] solution;
+                MatrixSolution solution;
                 try {
                     Printer.printMatrix(matrix.getMatrixCopy());
                     System.out.println("Separate entries with comas,");
@@ -163,6 +163,7 @@ public class FunctionsController {
                 if (solution == null) {
                     System.out.println("System is inconsistent");
                 }
+                else System.out.println(solution);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
             }

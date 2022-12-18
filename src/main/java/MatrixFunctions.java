@@ -149,7 +149,7 @@ public class MatrixFunctions {
      * @param b an m length array of Rational, represents mx1 transposed column vector
      * @return null if solution is inconsistent, otherwise returns an array of vectors. [0] is the offset, the rest is the span. if size is 1 then solution is unique
      */
-    public static Rational<MultivariatePolynomial<BigInteger>>[][] solve(Matrix A, Rational<MultivariatePolynomial<BigInteger>>[] b) {
+    public static MatrixSolution solve(Matrix A, Rational<MultivariatePolynomial<BigInteger>>[] b) {
         var zero = Parser.parse("0");
         //an augmented matrix;
         Rational[][] temp = new Rational[A.rows][A.cols + 1];
@@ -188,28 +188,71 @@ public class MatrixFunctions {
         }
 
         //solution to A so (nullity + 1) - 1
-        Rational[][] solution = new Rational[nullity][A.cols];
+        Rational[][] span = new Rational[nullity - 1][A.cols];
+        Rational[] offset = new Rational[A.cols];
 
-        for (int i = 0; i < solution.length; i++) {
-            Arrays.fill(solution[i], zero);
+        for (int i = 0; i < span.length; i++) {
+            Arrays.fill(span[i], zero);
         }
 
+        Arrays.fill(offset, zero);
         for (int i = 0; i < pivotCols.length; i++) {
-            solution[0][pivotCols[i]] = Ab.get(i, Ab.cols - 1);
+            offset[pivotCols[i]] = Ab.get(i, Ab.cols - 1);
         }
 
         var one = Parser.parse("1");
         for (int i = 0; i < nonPivotCols.length - 1; i++) {
             for (int j = 0; j < Ab.rows; j++) {
-                solution[i + 1][pivotCols[j]] = Ab.get(j, nonPivotCols[i]).negate();
+                span[i][pivotCols[j]] = Ab.get(j, nonPivotCols[i]).negate();
             }
-            solution[i + 1][nonPivotCols[i]] = one;
+            span[i][nonPivotCols[i]] = one;
         }
 
-        Printer.printMatrix(solution);
-
-        return null;
+        return new MatrixSolution(offset, span, nonPivotCols);
     }
 }
 
+class MatrixSolution {
+    private Rational[] offset;
+    private Rational[][] span;
+    //indicates the free variable of span[i], i.e. if x[i] = 4 then the vector span[i] is based on free variable x4.
+    private int[] x;
+
+    public MatrixSolution (Rational[] offset, Rational[][] span, int[] x) {
+        this.offset = offset;
+        this.span = span;
+        this.x = x;
+    }
+
+    public String toString() {
+        var str = new StringBuilder();
+        str.append("[");
+        for (int i = 0; i < offset.length; i++) {
+            str.append(Printer.rationalToString(offset[i]));
+            if (i < offset.length - 1) str.append(",");
+        }
+        str.append("]T");
+        for (int xi = 0; xi < span.length; xi++) {
+            str.append(" +\nx").append(x[xi] + 1).append("[");
+            for (int i = 0; i < span[xi].length; i++) {
+                str.append(Printer.rationalToString(span[xi][i]));
+                if (i < span[xi].length - 1) str.append(",");
+            }
+            str.append("]T");
+        }
+        return str.toString();
+    }
+
+    public Rational[] getOffset() {
+        return offset;
+    }
+
+    public Rational[][] getSpanVectors() {
+        return span;
+    }
+
+    public int[] getSpanX() {
+        return x;
+    }
+}
 
