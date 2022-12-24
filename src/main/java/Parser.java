@@ -11,6 +11,7 @@ import static cc.redberry.rings.Rings.Z;
 
 //
 public class Parser {
+    public static final MultivariateRing<MultivariatePolynomial<BigInteger>> ring = Rings.MultivariateRing(26, Z);
     private static Coder<Rational<MultivariatePolynomial<BigInteger>>, ?, ?> coder;
     private static String parseInput(String in) {
         if (in.length() <= 1) {
@@ -42,7 +43,6 @@ public class Parser {
         for (int i = 0; i < 26; i++) {
             allLetters[i] = "" + (char)('a' + i);
         }
-        MultivariateRing<MultivariatePolynomial<BigInteger>> ring = Rings.MultivariateRing(26, Z);
         Rationals<MultivariatePolynomial<BigInteger>> field = Frac(ring);
         coder = Coder.mkRationalsCoder(
                 field,

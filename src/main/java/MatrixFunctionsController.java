@@ -1,7 +1,7 @@
 import cc.redberry.rings.Rational;
 import java.util.Scanner;
 
-public class FunctionsController {
+public class MatrixFunctionsController {
     private static Scanner s;
     private static MatrixCollection matrices;
 
@@ -21,7 +21,8 @@ public class FunctionsController {
         quit = "Go back",
         addition = "Matrix Addition",
         determinant = "Matrix Determinant",
-        solve = "Solve";
+        solve = "Solve",
+        eigen = "Find eigenspaces";
 
     private static final String[] options = new String[]{
             addition,
@@ -29,6 +30,7 @@ public class FunctionsController {
             transpose,
             determinant,
             solve,
+            eigen,
             quit
     };
 
@@ -169,6 +171,10 @@ public class FunctionsController {
                 else System.out.println(solution);
                 System.out.println("\n---press enter to continue---");
                 s.nextLine();
+            }
+            case eigen -> {
+                var matrix = Controller.matrixPicker();
+                MatrixFunctions.findEigenvalues(matrix);
             }
         }
         return false;

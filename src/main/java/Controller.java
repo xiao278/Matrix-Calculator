@@ -90,7 +90,7 @@ public class Controller {
                 printUserGuide();
             }
             case misc -> {
-                FunctionsController.start(matrices, s);
+                MatrixFunctionsController.start(matrices, s);
             }
             case createMatrix -> {
                 try {

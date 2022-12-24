@@ -1,11 +1,18 @@
 import cc.redberry.rings.Rational;
 import cc.redberry.rings.bigint.BigInteger;
+import cc.redberry.rings.poly.multivar.MultivariateFactorization;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
 import java.util.Arrays;
+import java.util.HashMap;
+
+import static cc.redberry.rings.Rings.Q;
+import static cc.redberry.rings.Rings.Z;
+import static cc.redberry.rings.poly.multivar.MultivariateFactorization.Factor;
 
 public class MatrixFunctions {
     private static final Rational<MultivariatePolynomial<BigInteger>> zero = Parser.parse("0");
+    private static final Rational<MultivariatePolynomial<BigInteger>> one = Parser.parse("1");
 
     public static Rational<MultivariatePolynomial<BigInteger>>[][] product(Matrix left, Matrix right) {
         if (left.cols != right.rows) return null;
@@ -214,10 +221,41 @@ public class MatrixFunctions {
     /**
      *
      * @param A matrix with no variables
-     * @return
+     * @return a hashmap of eigenvalue-multiplicity pairs
      */
-    public static Rational[] findEigenvalues(Matrix A) {
-        return null;
+    public static HashMap<Rational, Integer> findEigenvalues(Matrix A) {
+        if (A.hasVariables() || A.rows != A.cols) return null;
+        Rational[][] I_n = new Rational[A.rows][A.rows];
+        for (int i = 0; i < A.rows; i++) {
+            for (int j = 0; j < A.cols; j++) {
+                I_n[i][j] = zero;
+            }
+        }
+
+        var x = Parser.parse("x");
+        for (int d = 0; d < A.rows; d++) {
+            I_n[d][d] = x;
+        }
+
+        //A - I_n
+        var ALIn = matrixAdd(A, new Matrix(I_n, "I_n"), -1);
+        //characteristic polynomial
+        var cp = findDeterminant(new Matrix(ALIn, "A - I_n"));
+        var factored = Factor(cp.numerator());
+        var factors = factored.factors;
+        var exp = factored.exponents;
+        HashMap<Rational, Integer> eigenvalues = new HashMap<>();
+        for (int i = 0; i < factors.size(); i++) {
+            var f = factors.get(i);
+            //one constant and one x^1 variable
+            if (f.size() == 2) {
+                var numerator = f.evaluate(23, 0).negate();
+                var denominator = f.evaluate(23, 1).add(numerator);
+                Rational eigenvalue = new Rational(Parser.ring, numerator, denominator);
+                eigenvalues.put(eigenvalue, exp.get(i));
+            }
+        }
+        return eigenvalues;
     }
 }
 
