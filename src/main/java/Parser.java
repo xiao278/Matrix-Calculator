@@ -6,12 +6,13 @@ import cc.redberry.rings.io.Coder;
 import cc.redberry.rings.poly.MultivariateRing;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
-import static cc.redberry.rings.Rings.Frac;
-import static cc.redberry.rings.Rings.Z;
+import static cc.redberry.rings.Rings.*;
 
 //
 public class Parser {
-    public static final MultivariateRing<MultivariatePolynomial<BigInteger>> ring = Rings.MultivariateRing(26, Z);
+    public static final MultivariateRing<MultivariatePolynomial<BigInteger>> ring = Rings.MultivariateRing(27, Z);
+    public static String[] parserVariables = new String[]{"a","b","c","d","e","f","g",
+            "h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","ß"};
     private static Coder<Rational<MultivariatePolynomial<BigInteger>>, ?, ?> coder;
     private static String parseInput(String in) {
         if (in.length() <= 1) {
@@ -22,9 +23,9 @@ public class Parser {
         for (int i = 1; i < in.length(); i++) {
             char prevChar = in.charAt(i-1);
             char curChar = in.charAt(i);
-            if ((Character.isLetter(prevChar) && Character.isLetter(curChar)) ||
-                    (Character.isDigit(prevChar) && Character.isLetter(curChar)) ||
-                    (Character.isLetter(prevChar) && Character.isDigit(curChar))
+            if ((isVariable(prevChar) && isVariable(curChar)) ||
+                    (Character.isDigit(prevChar) && isVariable(curChar)) ||
+                    (isVariable(prevChar) && Character.isDigit(curChar))
             ) {
                 out.append("*");
             }
@@ -39,13 +40,13 @@ public class Parser {
     }
 
     public static void initialize() {
-        String[] allLetters = new String[26];
-        for (int i = 0; i < 26; i++) {
-            allLetters[i] = "" + (char)('a' + i);
-        }
         Rationals<MultivariatePolynomial<BigInteger>> field = Frac(ring);
         coder = Coder.mkRationalsCoder(
                 field,
-                Coder.mkMultivariateCoder(ring, allLetters));
+                Coder.mkMultivariateCoder(ring, parserVariables));
+    }
+
+    public static boolean isVariable(char in) {
+        return Character.isLetter(in) || in == 'ß';
     }
 }

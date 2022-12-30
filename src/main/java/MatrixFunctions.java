@@ -3,6 +3,8 @@ import cc.redberry.rings.bigint.BigInteger;
 import cc.redberry.rings.poly.multivar.MultivariateFactorization;
 import cc.redberry.rings.poly.multivar.MultivariatePolynomial;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -232,9 +234,9 @@ public class MatrixFunctions {
             }
         }
 
-        var x = Parser.parse("x");
+        var beta = Parser.parse("x");
         for (int d = 0; d < A.rows; d++) {
-            I_n[d][d] = x;
+            I_n[d][d] = beta;
         }
 
         //A - I_n
@@ -302,4 +304,6 @@ class MatrixSolution {
         return x;
     }
 }
+
+
 

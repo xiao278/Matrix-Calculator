@@ -55,7 +55,7 @@ public class Matrix {
                     }
                 }
                 int number = Integer.parseInt(numString);
-                output.append((char)('a' + number - 1));
+                output.append(Parser.parserVariables[number - 1].charAt(0));
             }
             else if (current == '*') {
 

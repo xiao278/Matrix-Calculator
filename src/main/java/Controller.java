@@ -99,6 +99,7 @@ public class Controller {
                 }
                 catch (Exception e) {
                     Printer.clearConsole();
+                    e.printStackTrace();
                     System.out.println("Error: " + e.getMessage());
                     return;
                 }
