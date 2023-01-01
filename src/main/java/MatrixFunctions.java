@@ -13,8 +13,8 @@ import static cc.redberry.rings.Rings.Z;
 import static cc.redberry.rings.poly.multivar.MultivariateFactorization.Factor;
 
 public class MatrixFunctions {
-    private static final Rational<MultivariatePolynomial<BigInteger>> zero = Parser.parse("0");
-    private static final Rational<MultivariatePolynomial<BigInteger>> one = Parser.parse("1");
+    public static final Rational<MultivariatePolynomial<BigInteger>> zero = Parser.parse("0");
+    public static final Rational<MultivariatePolynomial<BigInteger>> one = Parser.parse("1");
 
     public static Rational<MultivariatePolynomial<BigInteger>>[][] product(Matrix left, Matrix right) {
         if (left.cols != right.rows) return null;
@@ -234,7 +234,7 @@ public class MatrixFunctions {
             }
         }
 
-        var beta = Parser.parse("x");
+        var beta = Parser.parse(Parser.parserVariables[26]);
         for (int d = 0; d < A.rows; d++) {
             I_n[d][d] = beta;
         }
@@ -302,6 +302,52 @@ class MatrixSolution {
 
     public int[] getSpanX() {
         return x;
+    }
+}
+
+/**
+ * workaround to put an irrational variable into a Rational type
+ */
+class FracExp{
+    private boolean isRational;
+    private Rational<MultivariatePolynomial<BigInteger>> rational;
+    private Rational<MultivariatePolynomial<BigInteger>> irrational;
+    private Rational<MultivariatePolynomial<BigInteger>> exponent;
+
+    /**
+     * default constructor with no fractional exponent
+     * @param r
+     */
+    public FracExp(Rational r){
+        this.isRational = true;
+        this.rational = r;
+        irrational = null;
+        exponent = MatrixFunctions.one;
+    }
+
+    /**
+     * precondition: exponent is not a whole number
+     * @param r
+     * @param ir
+     * @param exp
+     */
+    public FracExp(Rational r, Rational ir, Rational exp) {
+        this.rational = r;
+        this.irrational = ir;
+        this.exponent = exp;
+        this.isRational = false;
+    }
+
+    public Rational<MultivariatePolynomial<BigInteger>> getExponent() {
+        return exponent;
+    }
+
+    public Rational<MultivariatePolynomial<BigInteger>> getIrrational() {
+        return irrational;
+    }
+
+    public Rational<MultivariatePolynomial<BigInteger>> getRational() {
+        return rational;
     }
 }
 
