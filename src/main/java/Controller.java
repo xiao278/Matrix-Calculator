@@ -99,8 +99,12 @@ public class Controller {
                 }
                 catch (Exception e) {
                     Printer.clearConsole();
-                    e.printStackTrace();
-                    System.out.println("Error: " + e.getMessage());
+                    if (Printer.runningFromIntelliJ) {
+                        e.printStackTrace();
+                    }
+                    else {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     return;
                 }
             }

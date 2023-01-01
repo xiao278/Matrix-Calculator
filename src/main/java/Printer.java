@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public class Printer {
     //matrix column padding
-    private static boolean runningFromIntelliJ;
+    public static boolean runningFromIntelliJ;
 
     public static void initialize(String ide) {
         if (ide.equals("IDE")) runningFromIntelliJ = true;
