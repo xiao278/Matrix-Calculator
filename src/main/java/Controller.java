@@ -90,7 +90,7 @@ public class Controller {
                 printUserGuide();
             }
             case misc -> {
-                MatrixFunctionsController.start(matrices, s);
+                MiscFunctionsController.start(matrices, s);
             }
             case createMatrix -> {
                 try {
@@ -166,7 +166,7 @@ public class Controller {
             }
             else if (!input.equals("")) {
                 int index = Integer.parseInt(input) - 1;
-                if (index >= 0 && index < arr.length) return arr[index];
+                if (index >= 0 && index < filteredArr.size()) return filteredArr.get(index);
             }
         }
     }

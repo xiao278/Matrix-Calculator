@@ -1,7 +1,7 @@
 import cc.redberry.rings.Rational;
 import java.util.Scanner;
 
-public class MatrixFunctionsController {
+public class MiscFunctionsController {
     private static Scanner s;
     private static MatrixCollection matrices;
 
