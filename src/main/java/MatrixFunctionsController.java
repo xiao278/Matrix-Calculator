@@ -30,7 +30,6 @@ public class MatrixFunctionsController {
             transpose,
             determinant,
             solve,
-            eigen,
             quit
     };
 
